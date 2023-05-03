@@ -29,7 +29,7 @@ public class UserController {
         @Valid @RequestBody PostUserRequestDto dto
         
     ){
-        ResponseEntity<ResponseDto> response =  userService.postUser(dto);
+        ResponseEntity<ResponseDto> response = userService.postUser(dto);
         return response;
     } 
 

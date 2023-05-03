@@ -1,12 +1,16 @@
 package com.ssoyoo.blogExperienceSite.entity;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.ssoyoo.blogExperienceSite.dto.request.user.PostUserRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +35,26 @@ public class UserEntity {
     private String phoneNumber;
     private boolean personalInfoAgreement;
     private String profileImageUrl;
-    private String createdTime;
-    private String updatedTime;
-    
+    private String createdAt;
+    //private String updatedTime;
+
+    public UserEntity(PostUserRequestDto dto) {
+
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String createdTime = simpleDateFormat.format(now);
+
+        this.email = dto.getEmail();
+        this.password = dto.getPassword();
+        this.name = dto.getName();
+        this.nickname = dto.getNickname();
+        this.blogAddress = dto.getBlogAddress();
+        this.homeAddress = dto.getHomeAddress();
+        this.phoneNumber = dto.getPhoneNumber();
+        this.personalInfoAgreement = dto.isPersonalInfoAgreement();
+        this.profileImageUrl = dto.getProfileImageUrl();
+        this.createdAt = createdTime;
+
+    }
+
 }

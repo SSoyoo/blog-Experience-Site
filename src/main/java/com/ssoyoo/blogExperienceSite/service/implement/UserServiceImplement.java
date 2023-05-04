@@ -1,14 +1,18 @@
 package com.ssoyoo.blogExperienceSite.service.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
+import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.UserEntity;
+import com.ssoyoo.blogExperienceSite.provider.JwtTokenProvider;
 import com.ssoyoo.blogExperienceSite.repository.UserRepository;
 import com.ssoyoo.blogExperienceSite.service.UserService;
 
@@ -18,14 +22,17 @@ public class UserServiceImplement implements UserService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public UserServiceImplement(
         UserRepository userRepository,
-        BCryptPasswordEncoder passwordEncoder
+        BCryptPasswordEncoder passwordEncoder,
+        JwtTokenProvider jwtTokenProvider
     ){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
@@ -68,5 +75,37 @@ public class UserServiceImplement implements UserService {
         
         
     }
+
+    @Override
+    public ResponseEntity<?super SignInResponseDto> signIn(SignInRequestDto dto) {
+
+        SignInResponseDto body = null;
+        String email = dto.getEmail();
+        String password = dto.getPassword();
+
+        
+
+         try {
+
+            UserEntity userEntity = userRepository.findByEmail(email); 
+            if(userEntity == null) return CustomResponse.SignInFail();  
+
+            String encodedPassword = userEntity.getPassword();  
+            boolean isEqualPassword = passwordEncoder.matches(password, encodedPassword);
+            if(!isEqualPassword) return CustomResponse.SignInFail();
+
+            String jwt = jwtTokenProvider.createJwt(email);
+            body = new SignInResponseDto(jwt);
+            
+         } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+         }
+
+         return ResponseEntity.status(HttpStatus.OK).body(body);
+      
+    }
+    
+
     
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.service.UserService;
@@ -32,6 +33,14 @@ public class UserController {
         ResponseEntity<ResponseDto> response = userService.signUp(dto);
         return response;
     } 
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<ResponseDto>SignIn(
+        @Valid @RequestBody SignInRequestDto dto
+    ){
+        ResponseEntity<ResponseDto>response = userService.signIn(dto);
+        return response;
+    }
 
   
 

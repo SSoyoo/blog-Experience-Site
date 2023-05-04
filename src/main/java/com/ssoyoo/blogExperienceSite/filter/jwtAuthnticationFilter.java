@@ -20,12 +20,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ssoyoo.blogExperienceSite.provider.JwtTokenProvider;
 
 @Component
-public class jwtAuthnticationFilter extends OncePerRequestFilter  {
+public class JwtAuthnticationFilter extends OncePerRequestFilter  {
 
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public jwtAuthnticationFilter(JwtTokenProvider jwtTokenProvider){
+    public JwtAuthnticationFilter(JwtTokenProvider jwtTokenProvider){
         this.jwtTokenProvider = jwtTokenProvider;
     }
 

@@ -9,16 +9,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ssoyoo.blogExperienceSite.filter.jwtAuthnticationFilter;
+import com.ssoyoo.blogExperienceSite.filter.JwtAuthnticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig  {
 
-    private jwtAuthnticationFilter jwtAuthnticationFilter;
+    private JwtAuthnticationFilter jwtAuthnticationFilter;
 
     @Autowired
-    public WebSecurityConfig(jwtAuthnticationFilter jwtAuthnticationFilter){
+    public WebSecurityConfig(JwtAuthnticationFilter jwtAuthnticationFilter){
         this.jwtAuthnticationFilter = jwtAuthnticationFilter;
     }
 

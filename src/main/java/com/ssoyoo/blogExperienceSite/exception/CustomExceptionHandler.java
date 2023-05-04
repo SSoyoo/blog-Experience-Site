@@ -24,5 +24,5 @@ public class CustomExceptionHandler {
         MethodArgumentNotValidException exception) {
         return CustomResponse.validationFail();
 
- 
+        }
 }

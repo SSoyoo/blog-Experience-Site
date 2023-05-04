@@ -24,12 +24,14 @@ public class WebSecurityConfig  {
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
-        //TODO: 모든 경로 다 허용해 뒀고, 기능별로 어떻게 다르게 하는지 공부해서 변경필요! 
+        //모든 경로 다 허용해 뒀고, 기능별로 어떻게 다르게 하는지 공부해서 변경필요! 
+
         httpSecurity.cors().and()
                     .csrf().disable()
                     .httpBasic().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                    .authorizeRequests().antMatchers("/**").permitAll();
+                    .authorizeRequests().antMatchers("/**").hasRole("ADMIN")
+                    .anyRequest().authenticated();
                     
 
         httpSecurity.addFilterBefore(jwtAuthnticationFilter, UsernamePasswordAuthenticationFilter.class);

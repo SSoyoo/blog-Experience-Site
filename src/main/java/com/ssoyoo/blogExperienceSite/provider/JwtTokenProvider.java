@@ -17,13 +17,14 @@ public class JwtTokenProvider {
     @Value("${jwt.secret-key}")
     private String SECRET_KEY;
 
-    public String createJwt(String subject) {
+    public String createJwt(String subject, String role) {
 
         Date expriedDate = Date.from((Instant.now()).plus(1, ChronoUnit.HOURS));
 
         String jwt = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .setSubject(subject).setIssuedAt(new Date()).setExpiration(expriedDate)
+                .claim("role", role)
                 .compact();
 
         return jwt;

@@ -82,6 +82,7 @@ public class UserServiceImplement implements UserService {
         SignInResponseDto body = null;
         String email = dto.getEmail();
         String password = dto.getPassword();
+        String ROLE = "USER";
 
         
 
@@ -94,7 +95,7 @@ public class UserServiceImplement implements UserService {
             boolean isEqualPassword = passwordEncoder.matches(password, encodedPassword);
             if(!isEqualPassword) return CustomResponse.SignInFail();
 
-            String jwt = jwtTokenProvider.createJwt(email);
+            String jwt = jwtTokenProvider.createJwt(email,ROLE);
             body = new SignInResponseDto(jwt);
             
          } catch (Exception exception) {

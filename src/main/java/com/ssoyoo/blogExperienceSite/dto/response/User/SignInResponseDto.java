@@ -15,6 +15,7 @@ public class SignInResponseDto extends ResponseDto {
     private int expieredTime;
 
     public SignInResponseDto(String token){
+        super("SU","Sussecc");
         this.token = token;
         this.expieredTime = 3600;
     }

@@ -7,5 +7,5 @@ import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 
 public interface UserService {
     
-    public ResponseEntity<ResponseDto> postUser(PostUserRequestDto dto);
+    public ResponseEntity<ResponseDto> signUp(PostUserRequestDto dto);
 }

@@ -30,7 +30,7 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> postUser(PostUserRequestDto dto) {
+    public ResponseEntity<ResponseDto> signUp(PostUserRequestDto dto) {
 
     
         String email = dto.getEmail();

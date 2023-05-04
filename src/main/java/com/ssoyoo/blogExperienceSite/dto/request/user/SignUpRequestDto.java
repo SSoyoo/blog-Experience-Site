@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostUserRequestDto {
+public class SignUpRequestDto {
 
     @NotBlank @Email
     private String email;

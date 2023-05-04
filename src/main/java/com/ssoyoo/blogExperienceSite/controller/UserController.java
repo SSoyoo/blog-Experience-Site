@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssoyoo.blogExperienceSite.dto.request.user.PostUserRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.service.UserService;
 
@@ -25,12 +25,14 @@ public class UserController {
    
     
     @PostMapping("/sign-up")
-    public ResponseEntity<ResponseDto>postUser(
-        @Valid @RequestBody PostUserRequestDto dto
+    public ResponseEntity<ResponseDto> signUp(
+        @Valid @RequestBody SignUpRequestDto dto
         
     ){
         ResponseEntity<ResponseDto> response = userService.signUp(dto);
         return response;
     } 
+
+  
 
 }

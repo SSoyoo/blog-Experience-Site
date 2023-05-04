@@ -1,7 +1,6 @@
 package com.ssoyoo.blogExperienceSite.entity;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -10,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.ssoyoo.blogExperienceSite.dto.request.user.PostUserRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,7 +37,7 @@ public class UserEntity {
     private String createdAt;
     //private String updatedTime;
 
-    public UserEntity(PostUserRequestDto dto) {
+    public UserEntity(SignUpRequestDto dto) {
 
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

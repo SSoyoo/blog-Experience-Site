@@ -6,13 +6,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
-import com.ssoyoo.blogExperienceSite.dto.request.user.PostUserRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.UserEntity;
 import com.ssoyoo.blogExperienceSite.repository.UserRepository;
 import com.ssoyoo.blogExperienceSite.service.UserService;
 
-import net.bytebuddy.asm.Advice.Return;
 
 @Service
 public class UserServiceImplement implements UserService {
@@ -30,7 +29,7 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> signUp(PostUserRequestDto dto) {
+    public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto) {
 
     
         String email = dto.getEmail();

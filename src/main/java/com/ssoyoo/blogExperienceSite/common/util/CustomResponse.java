@@ -60,6 +60,14 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> SignInFail() {
+
+        ResponseDto errorBody = 
+            new ResponseDto("SF", "Sign In failed");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
     
 
 

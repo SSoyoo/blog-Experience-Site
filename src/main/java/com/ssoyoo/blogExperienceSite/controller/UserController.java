@@ -24,12 +24,12 @@ public class UserController {
     }
    
     
-    @PostMapping("")
+    @PostMapping("/sign-up")
     public ResponseEntity<ResponseDto>postUser(
         @Valid @RequestBody PostUserRequestDto dto
         
     ){
-        ResponseEntity<ResponseDto> response = userService.postUser(dto);
+        ResponseEntity<ResponseDto> response = userService.signUp(dto);
         return response;
     } 
 

@@ -3,6 +3,7 @@ package com.ssoyoo.blogExperienceSite.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -24,13 +25,20 @@ public class WebSecurityConfig  {
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception{
-        //모든 경로 다 허용해 뒀고, 기능별로 어떻게 다르게 하는지 공부해서 변경필요! 
+    
 
         httpSecurity.cors().and()
                     .csrf().disable()
                     .httpBasic().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                    .authorizeRequests().antMatchers("/**").hasRole("ADMIN")
+                    .authorizeRequests()
+                    .antMatchers( "/users/sign-up","/users/sign-in").permitAll()
+                    .antMatchers("/admin/sign-up","/admin/sign-in").permitAll()
+                    .antMatchers(HttpMethod.GET, "/campaign", "/serch", "/reviews").permitAll()
+                    .antMatchers(HttpMethod.POST, "/campaign", "/reviews").hasRole("USER")
+                    .antMatchers(HttpMethod.DELETE, "/campaign", "/reviews").hasRole("USER")
+                    .antMatchers(HttpMethod.PATCH, "/campaign", "/reviews").hasRole("USER")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated();
                     
 

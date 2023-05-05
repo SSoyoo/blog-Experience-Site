@@ -32,7 +32,7 @@ public class WebSecurityConfig  {
                     .httpBasic().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                     .authorizeRequests()
-                    .antMatchers( "/users/sign-up","/users/sign-in").permitAll()
+                    .antMatchers( "/users/sign-up","/users/sign-in", "/users").permitAll()
                     .antMatchers("/admin/sign-up","/admin/sign-in").permitAll()
                     .antMatchers(HttpMethod.GET, "/campaign", "/serch", "/reviews").permitAll()
                     .antMatchers(HttpMethod.POST, "/campaign", "/reviews").hasRole("USER")

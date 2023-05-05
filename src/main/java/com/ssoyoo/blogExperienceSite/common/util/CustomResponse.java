@@ -68,6 +68,23 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> authenticationFail() {
+
+        ResponseDto errorBody = 
+            new ResponseDto("AF", "Authentication failed");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> passwordMisMatch() {
+
+        ResponseDto errorBody = 
+            new ResponseDto("AF", "Password mismatch");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
+    }
+
+
     
 
 

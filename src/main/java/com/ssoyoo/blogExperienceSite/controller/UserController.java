@@ -4,16 +4,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.updateUsereRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import com.ssoyoo.blogExperienceSite.service.UserService;
@@ -45,14 +42,6 @@ public class UserController {
         return response;
     }
 
-    @PatchMapping("")
-    public ResponseEntity<ResponseDto> userUpdate(
-            @RequestHeader("Authorization") String jwt,
-            @RequestBody updateUsereRequestDto dto) {
-
-        ResponseEntity<ResponseDto> response = userService.updateUser(jwt, dto);
-        return response;
-
-    }
+   
 
 }

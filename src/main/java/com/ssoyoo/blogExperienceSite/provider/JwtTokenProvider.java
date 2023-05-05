@@ -27,10 +27,11 @@ public class JwtTokenProvider {
                 .claim("role", role)
                 .compact();
 
+
         return jwt;
 
     }
-
+  
     public String validateJwt(String jwt) {
         Claims claims = 
             Jwts.parser().setSigningKey(SECRET_KEY)

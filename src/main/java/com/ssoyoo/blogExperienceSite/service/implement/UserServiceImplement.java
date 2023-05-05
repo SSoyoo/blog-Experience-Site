@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.updateUsereRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.UserEntity;
@@ -108,45 +107,5 @@ public class UserServiceImplement implements UserService {
 
     }
 
-    @Override
-    public ResponseEntity<ResponseDto> updateUser(String jwt, updateUsereRequestDto dto) {
-
-        String email = jwtTokenProvider.validateJwt(jwt);
-
-        String nickname = dto.getNickname();
-        String blogAddress = dto.getBlogAddress();
-        String phoneNumber = dto.getPhoneNumber();
-        String profileImageUrl = dto.getProfileImageUrl();
-        String password = dto.getPassword();
-
-        try {
-
-            UserEntity userEntity = userRepository.findByEmail(email);
-            if (userEntity == null) return CustomResponse.authenticationFail();
-
-            String encodedPassword = userEntity.getPassword();
-            boolean isEqualPassword = passwordEncoder.matches(password, encodedPassword);
-            if (!isEqualPassword) return CustomResponse.passwordMisMatch();
-
-            if(nickname != null && userRepository.existsByNickname(nickname)) return CustomResponse.existentNickname();
-            userEntity.setNickname(nickname);
-
-            if(blogAddress != null && userRepository.existsByBlogAddress(blogAddress)) return CustomResponse.existentBlog();
-            userEntity.setBlogAddress(blogAddress);
-
-            if(phoneNumber != null && userRepository.existsByPhoneNumber(phoneNumber)) return CustomResponse.existentPhoneNumber();
-            userEntity.setPhoneNumber(phoneNumber);
-
-            if(profileImageUrl != null) userEntity.setProfileImageUrl(profileImageUrl);
-            userRepository.save(userEntity);
-
     
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return CustomResponse.databaseError();
-        }
-
-        return CustomResponse.success();
-    }
-
 }

@@ -6,14 +6,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.ssoyoo.blogExperienceSite.entity.UserEntity;
-import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
-import io.jsonwebtoken.Jws;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;

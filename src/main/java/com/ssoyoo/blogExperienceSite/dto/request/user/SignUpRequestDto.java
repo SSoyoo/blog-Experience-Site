@@ -21,6 +21,7 @@ public class SignUpRequestDto {
     private String name;
     @NotBlank
     private String nickname;
+    @NotBlank
     private String blogAddress;
     private String homeAddress;
     @NotBlank

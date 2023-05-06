@@ -2,6 +2,7 @@ package com.ssoyoo.blogExperienceSite.service;
 
 
 
+import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
 import org.springframework.http.ResponseEntity;
 
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
@@ -13,6 +14,6 @@ public interface UserService {
     
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto);
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
+    public ResponseEntity<ResponseDto> updateUser(String email, UpdateUserRequestDto dto);
 
-    
 }

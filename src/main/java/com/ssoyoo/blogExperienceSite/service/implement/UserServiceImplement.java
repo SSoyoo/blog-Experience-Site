@@ -1,33 +1,33 @@
 package com.ssoyoo.blogExperienceSite.service.implement;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.UserEntity;
 import com.ssoyoo.blogExperienceSite.provider.JwtTokenProvider;
 import com.ssoyoo.blogExperienceSite.repository.UserRepository;
 import com.ssoyoo.blogExperienceSite.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImplement implements UserService {
 
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
-    private JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public UserServiceImplement(
-            UserRepository userRepository,
-            BCryptPasswordEncoder passwordEncoder,
-            JwtTokenProvider jwtTokenProvider) {
+    public UserServiceImplement(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -46,20 +46,16 @@ public class UserServiceImplement implements UserService {
         try {
             // 이메일중복
             boolean isExistEmail = userRepository.existsByEmail(email);
-            if (isExistEmail)
-                return CustomResponse.existentEmail();
+            if (isExistEmail) return CustomResponse.existentEmail();
             // 닉네임중복
             boolean isExistNickname = userRepository.existsByNickname(nickname);
-            if (isExistNickname)
-                return CustomResponse.existentNickname();
+            if (isExistNickname) return CustomResponse.existentNickname();
             // 블로그주소중복
             boolean isExistBlogAddress = userRepository.existsByBlogAddress(blogAddress);
-            if (isExistBlogAddress)
-                return CustomResponse.existentBlog();
+            if (isExistBlogAddress) return CustomResponse.existentBlog();
             // 휴대폰번호 중복
             boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
-            if (isExistPhoneNumber)
-                return CustomResponse.existentPhoneNumber();
+            if (isExistPhoneNumber) return CustomResponse.existentPhoneNumber();
             // 새 유저 정보 save
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);
@@ -87,13 +83,11 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByEmail(email);
-            if (userEntity == null)
-                return CustomResponse.SignInFail();
+            if (userEntity == null) return CustomResponse.SignInFail();
 
             String encodedPassword = userEntity.getPassword();
             boolean isEqualPassword = passwordEncoder.matches(password, encodedPassword);
-            if (!isEqualPassword)
-                return CustomResponse.SignInFail();
+            if (!isEqualPassword) return CustomResponse.SignInFail();
 
             String jwt = jwtTokenProvider.createJwt(email, ROLE);
             body = new SignInResponseDto(jwt);
@@ -107,5 +101,21 @@ public class UserServiceImplement implements UserService {
 
     }
 
-    
+    @Override
+    public ResponseEntity<ResponseDto> updateUser(String email, UpdateUserRequestDto dto) {
+
+
+
+        try {
+            boolean isExistEmail = userRepository.existsByEmail(email);
+            if (!isExistEmail) return CustomResponse.authenticationFail();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+
+        return CustomResponse.success();
+    }
+
 }

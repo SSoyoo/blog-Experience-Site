@@ -79,7 +79,7 @@ public class CustomResponse {
     public static ResponseEntity<ResponseDto> passwordMisMatch() {
 
         ResponseDto errorBody = 
-            new ResponseDto("AF", "Password mismatch");
+            new ResponseDto("PM", "Password mismatch");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
 
     }

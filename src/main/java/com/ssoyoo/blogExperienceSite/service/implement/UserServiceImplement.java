@@ -13,6 +13,7 @@ import com.ssoyoo.blogExperienceSite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -104,11 +105,33 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseEntity<ResponseDto> updateUser(String email, UpdateUserRequestDto dto) {
 
+        String password = dto.getPassword();
+        String nickname = dto.getNickname();
+        String blogAddress = dto.getBlogAddress();
+        String phoneNumber = dto.getPhoneNumber();
+        String profileImageUrl = dto.getProfileImageUrl();
 
 
         try {
-            boolean isExistEmail = userRepository.existsByEmail(email);
-            if (!isExistEmail) return CustomResponse.authenticationFail();
+            //이메일로 존재하는 사용자인지 검증
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return CustomResponse.authenticationFail();
+            //비밀번호 일치 검증
+            String encodedPassword = userEntity.getPassword();
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+            if(!isEqualPassword) return CustomResponse.passwordMisMatch();
+
+            boolean isExistNickname = userRepository.existsByNickname(nickname);
+            boolean isExistBlogAddress = userRepository.existsByBlogAddress(blogAddress);
+            boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
+            //dto의 값이 null이 아니고, 중복된 값이 아니면 entity정보 변경
+            if(nickname!= null && !isExistNickname) userEntity.setNickname(nickname);
+            if(blogAddress!=null && isExistBlogAddress) userEntity.setBlogAddress(blogAddress);
+            if(phoneNumber!= null && isExistPhoneNumber) userEntity.setPhoneNumber(phoneNumber);
+
+            userRepository.save(userEntity);
+
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return CustomResponse.databaseError();

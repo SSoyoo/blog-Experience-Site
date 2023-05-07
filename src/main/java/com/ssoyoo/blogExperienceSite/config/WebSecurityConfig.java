@@ -1,5 +1,6 @@
 package com.ssoyoo.blogExperienceSite.config;
 
+import com.ssoyoo.blogExperienceSite.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,18 +12,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ssoyoo.blogExperienceSite.filter.JwtAuthnticationFilter;
 
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig   {
 
-    private JwtAuthnticationFilter jwtAuthnticationFilter;
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
     @Autowired
-    public WebSecurityConfig(JwtAuthnticationFilter jwtAuthnticationFilter){
-        this.jwtAuthnticationFilter = jwtAuthnticationFilter;
+    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter){
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
 
@@ -46,7 +46,7 @@ public class WebSecurityConfig   {
                 .anyRequest().authenticated();
                     
 
-        httpSecurity.addFilterBefore(jwtAuthnticationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
 
     

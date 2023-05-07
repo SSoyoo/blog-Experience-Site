@@ -8,12 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ssoyoo.blogExperienceSite.service.implement.AdminDetailsServiceImpl;
 import com.ssoyoo.blogExperienceSite.service.implement.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -30,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter  {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
+    private final AdminDetailsServiceImpl adminDetailsService;
 
 
     @Override
@@ -42,14 +45,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter  {
             if (hasJwt) {
                 String subject = jwtTokenProvider.validateJwt(jwt);
                 List<GrantedAuthority> authorities = jwtTokenProvider.getAuthoritiesFromJwt(jwt);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
+                UserDetails userDetails;
+                if (authorities.contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                    userDetails = adminDetailsService.loadUserByUsername(subject);
+                } else {
+                    userDetails = userDetailsService.loadUserByUsername(subject);
+                }
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
 
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
             exception.printStackTrace();

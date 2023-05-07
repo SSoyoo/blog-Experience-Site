@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 public class SignInResponseDto extends ResponseDto {
 
     private String token;
-    private int expieredTime;
+    private int expiredTime;
 
     public SignInResponseDto(String token){
-        super("SU","Sussecc");
+        super("SU","Success");
         this.token = token;
-        this.expieredTime = 3600;
+        this.expiredTime = 3600;
     }
     
 }

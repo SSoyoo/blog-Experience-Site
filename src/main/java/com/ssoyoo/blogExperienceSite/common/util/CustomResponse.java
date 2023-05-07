@@ -60,7 +60,7 @@ public class CustomResponse {
 
     }
 
-    public static ResponseEntity<ResponseDto> SignInFail() {
+    public static ResponseEntity<ResponseDto> signInFail() {
 
         ResponseDto errorBody = 
             new ResponseDto("SF", "Sign In failed");

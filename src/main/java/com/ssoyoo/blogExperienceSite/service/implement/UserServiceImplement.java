@@ -78,11 +78,11 @@ public class UserServiceImplement implements UserService {
         try {
 
             UserEntity userEntity = userRepository.findByEmail(email);
-            if (userEntity == null) return CustomResponse.SignInFail();
+            if (userEntity == null) return CustomResponse.signInFail();
 
             String encodedPassword = userEntity.getPassword();
             boolean isEqualPassword = passwordEncoder.matches(password, encodedPassword);
-            if (!isEqualPassword) return CustomResponse.SignInFail();
+            if (!isEqualPassword) return CustomResponse.signInFail();
 
             String jwt = jwtTokenProvider.createJwt(email, ROLE);
             body = new SignInResponseDto(jwt);

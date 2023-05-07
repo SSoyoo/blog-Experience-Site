@@ -3,6 +3,7 @@ package com.ssoyoo.blogExperienceSite.service.implement;
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.UpdatePasswordRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -128,9 +130,33 @@ public class UserServiceImplement implements UserService {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
+        return CustomResponse.success();
+    }
 
+    @Override
+    public ResponseEntity<ResponseDto> updatePassword(String email, UpdatePasswordRequestDto dto) {
+
+        String currentPassword = dto.getCurrentPassword();
+        String encodedPasswordPasswordToChange =
+                passwordEncoder.encode(dto.getPasswordToChange());
+
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if(userEntity == null) return  CustomResponse.authenticationFail();
+
+            String encodedPassword = userEntity.getPassword();
+            boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedPassword);
+            if(!isEqualPassword) return CustomResponse.passwordMisMatch();
+
+            userRepository.save(userEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            CustomResponse.databaseError();
+        }
 
         return CustomResponse.success();
+
     }
 
 }

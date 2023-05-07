@@ -2,6 +2,7 @@ package com.ssoyoo.blogExperienceSite.controller;
 
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.UpdatePasswordRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
@@ -29,7 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<ResponseDto> signUp(@Valid @RequestBody SignUpRequestDto dto
+    public ResponseEntity<ResponseDto> signUp(
+            @Valid @RequestBody SignUpRequestDto dto
 
     ) {
         ResponseEntity<ResponseDto> response = userService.signUp(dto);
@@ -37,21 +39,36 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseEntity<? super SignInResponseDto> SignIn(@Valid @RequestBody SignInRequestDto dto) {
+    public ResponseEntity<? super SignInResponseDto> SignIn(
+            @Valid @RequestBody SignInRequestDto dto) {
         ResponseEntity<? super SignInResponseDto> response = userService.signIn(dto);
         return response;
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequestDto dto, @AuthenticationPrincipal UserPrincipal userPrincipal
-
-
+    public ResponseEntity<ResponseDto> updateUser(
+            @Valid @RequestBody UpdateUserRequestDto dto,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
         {
             String email = userPrincipal.getEmail();
             ResponseEntity<ResponseDto> response = userService.updateUser(email, dto);
             return response;
         }
-
     }
+
+    @PatchMapping("/update/password")
+    public ResponseEntity<ResponseDto> updatePassword(
+
+            @Valid @RequestBody  UpdatePasswordRequestDto dto,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ){
+            String email = userPrincipal.getEmail();
+            ResponseEntity<ResponseDto> response = userService.updatePassword(email,dto);
+            return response;
+    }
+
+
+
+
 }

@@ -89,9 +89,17 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
 
+    public static ResponseEntity<ResponseDto> notModified() {
+        ResponseDto errorBody = new ResponseDto("NM", "NOT_MODIFIED");
+        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(errorBody);
+    }
 
-    
 
 
-    
+
+
+
+
+
+
 }

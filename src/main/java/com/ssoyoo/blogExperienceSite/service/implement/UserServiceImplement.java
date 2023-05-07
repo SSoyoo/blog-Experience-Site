@@ -120,8 +120,8 @@ public class UserServiceImplement implements UserService {
             boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
             //dto의 값이 null이 아니고, 중복된 값이 아니면 entity정보 변경
             if(nickname!= null && !isExistNickname) userEntity.setNickname(nickname);
-            if(blogAddress!=null && isExistBlogAddress) userEntity.setBlogAddress(blogAddress);
-            if(phoneNumber!= null && isExistPhoneNumber) userEntity.setPhoneNumber(phoneNumber);
+            if(blogAddress!=null && !isExistBlogAddress) userEntity.setBlogAddress(blogAddress);
+            if(phoneNumber!= null && !isExistPhoneNumber) userEntity.setPhoneNumber(phoneNumber);
 
             userRepository.save(userEntity);
 

@@ -2,6 +2,7 @@ package com.ssoyoo.blogExperienceSite.service.implement;
 
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.AdminSignUpRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.admin.UpdateAdminRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
@@ -76,5 +77,36 @@ public class AdminServiceImplement implements AdminService {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> updateAdmin(String email, UpdateAdminRequestDto dto) {
+
+        String password = dto.getPassword();
+        String phoneNumber = dto.getPhoneNumber();
+
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(email);
+            if(adminEntity == null) return CustomResponse.authenticationFail();
+            String encodedPassword = adminEntity.getAdminPassword();
+            boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
+            if(!isEqualPassword) return CustomResponse.passwordMisMatch();
+
+            boolean isExistPhoneNumber = adminRepository.existsByAdminPhoneNumber(phoneNumber);
+            if(phoneNumber!= null && !isExistPhoneNumber) adminEntity.setAdminPhoneNumber(phoneNumber);
+
+            adminRepository.save(adminEntity);
+
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            CustomResponse.databaseError();
+        }
+
+
+        return CustomResponse.success();
     }
 }

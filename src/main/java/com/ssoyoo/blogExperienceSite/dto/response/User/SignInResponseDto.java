@@ -1,12 +1,13 @@
 package com.ssoyoo.blogExperienceSite.dto.response.User;
 
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Getter
 @Setter
+@NoArgsConstructor
 public class SignInResponseDto extends ResponseDto {
 
     private String token;
@@ -17,6 +18,5 @@ public class SignInResponseDto extends ResponseDto {
         this.token = token;
         this.expiredTime = 3600;
     }
-
 
 }

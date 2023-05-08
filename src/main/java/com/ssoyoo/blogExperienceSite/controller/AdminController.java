@@ -3,7 +3,6 @@ package com.ssoyoo.blogExperienceSite.controller;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.AdminSignUpRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.UpdateAdminRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;

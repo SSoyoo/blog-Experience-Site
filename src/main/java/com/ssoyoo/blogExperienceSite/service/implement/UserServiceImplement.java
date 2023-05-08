@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -104,6 +103,7 @@ public class UserServiceImplement implements UserService {
         String blogAddress = dto.getBlogAddress();
         String phoneNumber = dto.getPhoneNumber();
         String profileImageUrl = dto.getProfileImageUrl();
+        String homeAddress = dto.getHomeAddress();
 
 
         try {
@@ -119,9 +119,21 @@ public class UserServiceImplement implements UserService {
             boolean isExistBlogAddress = userRepository.existsByBlogAddress(blogAddress);
             boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
             //dto의 값이 null이 아니고, 중복된 값이 아니면 entity정보 변경
-            if(nickname!= null && !isExistNickname) userEntity.setNickname(nickname);
-            if(blogAddress!=null && !isExistBlogAddress) userEntity.setBlogAddress(blogAddress);
-            if(phoneNumber!= null && !isExistPhoneNumber) userEntity.setPhoneNumber(phoneNumber);
+
+            if(isExistNickname) return CustomResponse.existentNickname();
+            if(nickname != null) userEntity.setNickname(nickname);
+
+            if(isExistBlogAddress) return CustomResponse.existentBlog();
+            if(blogAddress != null) userEntity.setBlogAddress(blogAddress);
+
+            if(isExistPhoneNumber) return CustomResponse.existentPhoneNumber();
+            if(phoneNumber != null) userEntity.setPhoneNumber(phoneNumber);
+
+            //중복허용 되는 필드는 바로 set
+            //프로필사진, 집 주소는 삭제 할 수도 있으니까 null여부 상관없이 set
+
+            userEntity.setProfileImageUrl(profileImageUrl);
+            userEntity.setHomeAddress(homeAddress);
 
             userRepository.save(userEntity);
 

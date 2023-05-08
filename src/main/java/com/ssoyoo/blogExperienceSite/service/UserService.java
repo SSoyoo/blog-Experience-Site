@@ -4,13 +4,13 @@ package com.ssoyoo.blogExperienceSite.service;
 
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdatePasswordRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 public interface UserService {
     

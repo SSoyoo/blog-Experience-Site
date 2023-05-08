@@ -18,5 +18,6 @@ public class UpdateUserRequestDto {
     private String blogAddress;
     @Pattern(regexp="^\\d{3}-\\d{3,4}-\\d{4}$")
     private String phoneNumber;
+    private String homeAddress;
     private String profileImageUrl;
 }

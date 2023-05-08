@@ -95,11 +95,10 @@ public class AdminServiceImplement implements AdminService {
             if(!isEqualPassword) return CustomResponse.passwordMisMatch();
 
             boolean isExistPhoneNumber = adminRepository.existsByAdminPhoneNumber(phoneNumber);
-            if(phoneNumber!= null && !isExistPhoneNumber) adminEntity.setAdminPhoneNumber(phoneNumber);
+            if(isExistPhoneNumber) return CustomResponse.existentPhoneNumber();
+            if(phoneNumber != null) adminEntity.setAdminPhoneNumber(phoneNumber);
 
             adminRepository.save(adminEntity);
-
-
 
         }catch (Exception exception){
             exception.printStackTrace();

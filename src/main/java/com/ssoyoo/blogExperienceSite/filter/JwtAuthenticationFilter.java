@@ -73,14 +73,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter  {
         return token.substring(7);
     }
 
-    protected void successfulAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain,
-            Authentication authResult)
-            throws IOException, ServletException {
-        SecurityContextHolder.getContext().setAuthentication(authResult);
-        chain.doFilter(request, response);
-    }
 
 }

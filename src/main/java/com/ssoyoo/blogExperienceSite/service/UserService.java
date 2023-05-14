@@ -4,6 +4,7 @@ package com.ssoyoo.blogExperienceSite.service;
 
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdatePasswordRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.response.User.GetMyInfoResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import org.springframework.http.ResponseEntity;
 
@@ -18,4 +19,6 @@ public interface UserService {
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
     public ResponseEntity<ResponseDto> updateUser(String email, UpdateUserRequestDto dto);
     ResponseEntity<ResponseDto> updatePassword(String email, UpdatePasswordRequestDto dto);
+
+    ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmail);
 }

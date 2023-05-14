@@ -41,7 +41,7 @@ public class JwtTokenProvider {
         Claims claims =
                 Jwts.parser().setSigningKey(SECRET_KEY)
                         .parseClaimsJws(jwt).getBody();
-        return claims.getSubject(); // JWT Subject를 이메일로 추출
+        return claims.getSubject();
 
 
     }

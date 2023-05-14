@@ -6,6 +6,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdatePasswordRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.User.GetMyInfoResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.UserEntity;
 import com.ssoyoo.blogExperienceSite.provider.JwtTokenProvider;
@@ -38,30 +39,30 @@ public class UserServiceImplement implements UserService {
         dto.setPassword(encodedPassword);
 
         try {
-            // 이메일중복
+
             boolean isExistEmail = userRepository.existsByEmail(email);
             if (isExistEmail) return CustomResponse.existentEmail();
-            // 닉네임중복
+
             boolean isExistNickname = userRepository.existsByNickname(nickname);
             if (isExistNickname) return CustomResponse.existentNickname();
-            // 블로그주소중복
+
             boolean isExistBlogAddress = userRepository.existsByBlogAddress(blogAddress);
             if (isExistBlogAddress) return CustomResponse.existentBlog();
-            // 휴대폰번호 중복
+
             boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
             if (isExistPhoneNumber) return CustomResponse.existentPhoneNumber();
-            // 새 유저 정보 save
+
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);
 
         } catch (Exception exception) {
-            // 데이터베이스 오류반환
+
             exception.printStackTrace();
             return CustomResponse.databaseError();
 
         }
 
-        // 성공결과 반환
+
         return CustomResponse.success();
 
     }
@@ -107,31 +108,27 @@ public class UserServiceImplement implements UserService {
 
 
         try {
-            //이메일로 존재하는 사용자인지 검증
+
             UserEntity userEntity = userRepository.findByEmail(email);
             if (userEntity == null) return CustomResponse.authenticationFail();
-            //비밀번호 일치 검증
+
             String encodedPassword = userEntity.getPassword();
             boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
             if(!isEqualPassword) return CustomResponse.passwordMisMatch();
 
             boolean isExistNickname = userRepository.existsByNickname(nickname);
-            boolean isExistBlogAddress = userRepository.existsByBlogAddress(blogAddress);
-            boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
-            //dto의 값이 null이 아니고, 중복된 값이 아니면 entity정보 변경
-
             if(isExistNickname) return CustomResponse.existentNickname();
-            if(nickname != null) userEntity.setNickname(nickname);
 
+            boolean isExistBlogAddress = userRepository.existsByBlogAddress(blogAddress);
             if(isExistBlogAddress) return CustomResponse.existentBlog();
-            if(blogAddress != null) userEntity.setBlogAddress(blogAddress);
 
+            boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
             if(isExistPhoneNumber) return CustomResponse.existentPhoneNumber();
-            if(phoneNumber != null) userEntity.setPhoneNumber(phoneNumber);
 
-            //중복허용 되는 필드는 바로 set
-            //프로필사진, 집 주소는 삭제 할 수도 있으니까 null여부 상관없이 set
 
+            userEntity.setNickname(nickname);
+            userEntity.setBlogAddress(blogAddress);
+            userEntity.setPhoneNumber(phoneNumber);
             userEntity.setProfileImageUrl(profileImageUrl);
             userEntity.setHomeAddress(homeAddress);
 
@@ -169,6 +166,26 @@ public class UserServiceImplement implements UserService {
 
         return CustomResponse.success();
 
+    }
+
+    @Override
+    public ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmail) {
+
+        GetMyInfoResponseDto body = null;
+
+
+        try {
+
+            UserEntity userEntity = userRepository.findByEmail(userEmail);
+            if(userEntity == null) return CustomResponse.authenticationFail();
+
+            body = new GetMyInfoResponseDto(userEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -28,7 +28,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/sign-up")
     public ResponseEntity<ResponseDto> signUp(
             @Valid @RequestBody SignUpRequestDto dto
 
@@ -37,7 +37,7 @@ public class UserController {
         return response;
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/sign-in")
     public ResponseEntity<? super SignInResponseDto> SignIn(
             @Valid @RequestBody SignInRequestDto dto) {
         ResponseEntity<? super SignInResponseDto> response = userService.signIn(dto);

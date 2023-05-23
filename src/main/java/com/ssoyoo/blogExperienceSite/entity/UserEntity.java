@@ -24,7 +24,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int userId;
     private String email;
     private String password;
     private String name;
@@ -35,7 +35,6 @@ public class UserEntity {
     private boolean personalInfoAgreement;
     private String profileImageUrl;
     private String createdAt;
-    //private String updatedTime;
 
     public UserEntity(SignUpRequestDto dto) {
 

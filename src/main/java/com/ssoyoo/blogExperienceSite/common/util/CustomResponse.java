@@ -84,14 +84,11 @@ public class CustomResponse {
 
     }
 
-    public static ResponseEntity<ResponseDto> expiredJwtException() {
-        ResponseDto errorBody = new ResponseDto("EJ", "Expired JWT");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
-    }
+    public static ResponseEntity<ResponseDto> noExistUser() {
 
-    public static ResponseEntity<ResponseDto> notModified() {
-        ResponseDto errorBody = new ResponseDto("NM", "NOT_MODIFIED");
-        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(errorBody);
+        ResponseDto errorBody = new ResponseDto("NU", "Non-Existent User");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
+
     }
 
 

@@ -1,16 +1,14 @@
 package com.ssoyoo.blogExperienceSite.entity;
 
-import com.ssoyoo.blogExperienceSite.dto.request.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Entity(name = "campaign")
 @Table(name = "campaign")

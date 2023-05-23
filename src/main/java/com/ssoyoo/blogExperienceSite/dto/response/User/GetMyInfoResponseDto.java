@@ -24,7 +24,7 @@ public class GetMyInfoResponseDto extends ResponseDto {
 
         super("SU","Success");
 
-        this.id = userEntity.getId();
+        this.id = userEntity.getUserId();
         this.email = userEntity.getEmail();
         this.name = userEntity.getName();
         this.nickname = userEntity.getNickname();

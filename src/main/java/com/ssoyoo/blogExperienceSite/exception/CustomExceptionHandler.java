@@ -25,11 +25,6 @@ public class CustomExceptionHandler {
         return CustomResponse.validationFail();
     }
 
-    @ExceptionHandler(ExpiredJwtException.class)
-    public  ResponseEntity<ResponseDto>expiredJwtException(ExpiredJwtException exception){
-        return CustomResponse.expiredJwtException();
-    }
-
 
 
 }

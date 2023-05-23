@@ -22,12 +22,14 @@ public class UserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
-        authorities.add(new SimpleGrantedAuthority("ADMIN"));
         return authorities;
     }
 
     public String getEmail(){
         return userEntity.getEmail();
+    }
+    public int getUserId(){
+        return userEntity.getUserId();
     }
 
     @Override

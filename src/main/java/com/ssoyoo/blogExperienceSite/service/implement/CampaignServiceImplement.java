@@ -29,7 +29,7 @@ public class CampaignServiceImplement implements CampaignService {
             if(adminEntity == null) CustomResponse.authenticationFail();
 
             CampaignEntity campaignEntity = new CampaignEntity(dto);
-
+            campaignRepository.save(campaignEntity);
 
         }catch (Exception exception){
             exception.printStackTrace();

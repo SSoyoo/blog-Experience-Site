@@ -17,12 +17,13 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-//@RequestMapping("/campaigns")
+@RequestMapping("/campaign")
+
 public class CampaignController {
-    //TODO : 컨트롤러 위치 어디가 좋을지 물어보고 수정할 것. 변경필요하면 securityConfig도 수정필요
+
     private final CampaignService campaignService;
 
-    @PostMapping("admin/campaign")
+    @PostMapping("")
     public ResponseEntity<ResponseDto> postCampaign(
             @Valid @RequestBody PostCampaignRequestDto dto,
             @AuthenticationPrincipal AdminPrincipal adminPrincipal
@@ -32,7 +33,6 @@ public class CampaignController {
 
         ResponseEntity<ResponseDto> response = campaignService.postCampaign(adminEmail, dto);
         return response;
-
 
     }
     

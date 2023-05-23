@@ -28,7 +28,6 @@ public class CampaignEntity {
     private String provisionDetail;
     private String location;
     private int recruitsNumber;
-    //private int applicantsNumber; campaign application에서 count()로 가져오기?
     private String searchKeyword;
     private String information;
     private String mission;
@@ -39,7 +38,6 @@ public class CampaignEntity {
     private String reviewRegistrationStartDate;
     private String reviewRegistrationDeadline;
     private String campaignEndDate;
-    //private int favorite_count; favorite 테이블에서 count()?
     private String createdAt;
     private String updatedAt;
 
@@ -68,8 +66,12 @@ public class CampaignEntity {
         this.category = dto.getCategory();
         this.title = dto.getTitle();
         this.provisionDetail = dto.getProvisionDetail();
+        this.information = dto.getInformation();
         this.location = dto.getLocation();
+        this.precaution = dto.getPrecaution();
+        this.mission = dto.getMission();
         this.recruitsNumber = dto.getRecruitsNumber();
+        this.searchKeyword = dto.getSearchKeyword();
         this.recruitmentStartDate = formattedStartDate;
         this.recruitmentDeadline = formattedDeadline;
         this.reviewerSelectionDate = formattedSelectionDate;

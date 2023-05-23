@@ -19,7 +19,7 @@ public class CampaignEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int campaignId;
     private String campaignType;
     private String category;
     private String title;

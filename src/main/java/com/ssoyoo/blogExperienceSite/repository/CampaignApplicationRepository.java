@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CampaignApplicationRepository extends JpaRepository<CampaignApplicationEntity, CampaignApplicationPk> {
 
+    boolean existsByUserIdAndCampaignId(Integer userId, Integer campaignId);
 
 }

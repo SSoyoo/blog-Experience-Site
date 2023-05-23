@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CampaignServiceImplement implements CampaignService {
@@ -48,14 +50,24 @@ public class CampaignServiceImplement implements CampaignService {
 
     @Override
     public ResponseEntity<ResponseDto> campaignApplication(int userId, CampaignApplicationRequestDto dto) {
+        int campaignId = dto.getCampaignId();
 
         try {
 
             UserEntity userEntity = userRepository.findByUserId(userId);
             if(userEntity == null) return CustomResponse.noExistUser();
 
+            boolean isExistCampaign = campaignRepository.existsById(campaignId);
+            if(!isExistCampaign) return CustomResponse.noExistCampaign();
+
+            boolean isExistApplication =
+                    campaignApplicationRepository.existsByUserIdAndCampaignId(userId,campaignId);
+            if(isExistApplication) return CustomResponse.existApplication();
+
             CampaignApplicationEntity campaignApplicationEntity =
                     new CampaignApplicationEntity(userEntity, dto);
+
+            //TODO : 신청 마감일이 지난 경우 작성필요
 
             campaignApplicationRepository.save(campaignApplicationEntity);
 

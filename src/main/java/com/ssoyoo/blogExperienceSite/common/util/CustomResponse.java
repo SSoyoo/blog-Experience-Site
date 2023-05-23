@@ -91,6 +91,21 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> noExistCampaign() {
+
+        ResponseDto errorBody = new ResponseDto("NU", "Non-Existent Campaign");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> existApplication() {
+
+        ResponseDto errorBody = new ResponseDto("EA", "Existent Application");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
+
 
 
 

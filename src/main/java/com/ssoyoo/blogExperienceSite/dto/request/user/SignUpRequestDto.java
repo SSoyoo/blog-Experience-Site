@@ -2,6 +2,7 @@ package com.ssoyoo.blogExperienceSite.dto.request.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class SignUpRequestDto {
     @Pattern(regexp="^\\d{3}-\\d{3,4}-\\d{4}$")
     private String phoneNumber;
     private String profileImageUrl;
+    @NotNull
     private boolean personalInfoAgreement;
 
     

@@ -14,8 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Id
     private String adminEmail;
     private String adminPassword;
     private String adminName;

@@ -1,6 +1,5 @@
 package com.ssoyoo.blogExperienceSite.exception;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

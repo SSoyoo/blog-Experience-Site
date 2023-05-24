@@ -4,16 +4,14 @@ package com.ssoyoo.blogExperienceSite.controller;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -47,7 +45,21 @@ public class CampaignController {
         ResponseEntity<ResponseDto> response = campaignService.campaignApplication(userId,dto);
         return response;
 
+    }
 
+    @GetMapping("/{campaignId}")
+    public ResponseEntity<? super GetCampaignDetailResponseDto> getCampaignDetail(
+        @PathVariable Integer campaignId,
+        @AuthenticationPrincipal UserPrincipal userPrincipal
+
+    ){
+        Integer userId = null;
+        if (userPrincipal != null) userId = userPrincipal.getUserId();
+
+        ResponseEntity<? super GetCampaignDetailResponseDto> response =
+                campaignService.getCampaignDetail(userId,campaignId);
+
+        return response;
     }
     
 

@@ -6,9 +6,12 @@ import com.ssoyoo.blogExperienceSite.entity.pk.CampaignApplicationPk;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CampaignApplicationRepository extends JpaRepository<CampaignApplicationEntity, CampaignApplicationPk> {
 
-    boolean existsByUserIdAndCampaignId(Integer userId, Integer campaignId);
+    public boolean existsByUserIdAndCampaignId(Integer userId, Integer campaignId);
+    public List<CampaignApplicationEntity> findByCampaignId(Integer campaignId);
 
 }

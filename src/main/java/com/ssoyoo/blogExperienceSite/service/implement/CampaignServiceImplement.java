@@ -4,19 +4,15 @@ import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
-import com.ssoyoo.blogExperienceSite.entity.AdminEntity;
-import com.ssoyoo.blogExperienceSite.entity.CampaignApplicationEntity;
-import com.ssoyoo.blogExperienceSite.entity.CampaignEntity;
-import com.ssoyoo.blogExperienceSite.entity.UserEntity;
-import com.ssoyoo.blogExperienceSite.repository.AdminRepository;
-import com.ssoyoo.blogExperienceSite.repository.CampaignApplicationRepository;
-import com.ssoyoo.blogExperienceSite.repository.CampaignRepository;
-import com.ssoyoo.blogExperienceSite.repository.UserRepository;
+import com.ssoyoo.blogExperienceSite.entity.*;
+import com.ssoyoo.blogExperienceSite.repository.*;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +20,7 @@ import java.util.Optional;
 public class CampaignServiceImplement implements CampaignService {
 
     private final CampaignRepository campaignRepository;
+    private final PhotoRepository photoRepository;
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
     private final CampaignApplicationRepository campaignApplicationRepository;
@@ -32,6 +29,9 @@ public class CampaignServiceImplement implements CampaignService {
     @Override
     public ResponseEntity<ResponseDto> postCampaign(String adminEmail, PostCampaignRequestDto dto) {
 
+        List<String>dtoPhotoList = dto.getPhotoUrlList();
+        List<PhotoEntity> campaignPhotoList = new ArrayList<>();
+
         try {
 
             AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
@@ -39,6 +39,19 @@ public class CampaignServiceImplement implements CampaignService {
 
             CampaignEntity campaignEntity = new CampaignEntity(dto);
             campaignRepository.save(campaignEntity);
+
+            int campaignId = campaignEntity.getCampaignId();
+
+            for(String photoUrl : dtoPhotoList){
+                PhotoEntity photoEntity = new PhotoEntity(campaignId, photoUrl);
+                campaignPhotoList.add(photoEntity);
+            }
+
+            photoRepository.saveAll(campaignPhotoList);
+
+
+
+
 
         }catch (Exception exception){
             exception.printStackTrace();

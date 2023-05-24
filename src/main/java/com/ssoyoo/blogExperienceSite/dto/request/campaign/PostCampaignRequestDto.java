@@ -5,8 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,6 +38,8 @@ public class PostCampaignRequestDto {
     private String precaution;
     @NotBlank @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String recruitmentStartDate;
+    @NotNull @Size(min = 0, max = 3)
+    private List<String> photoUrlList;
 
 
 

@@ -5,6 +5,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationReq
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
 import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
@@ -60,6 +61,19 @@ public class CampaignController {
                 campaignService.getCampaignDetail(userId,campaignId);
 
         return response;
+    }
+
+    @GetMapping("/list/{sort}")
+    public ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(
+            @PathVariable("sort") String listSort
+    ){
+
+        ResponseEntity<? super GetCampaignListResponseDto> response =
+                campaignService.getCampaignList(listSort);
+
+        return response;
+
+
     }
 
 

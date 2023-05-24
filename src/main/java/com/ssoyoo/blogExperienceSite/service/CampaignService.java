@@ -4,6 +4,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationReq
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface CampaignService {
@@ -12,4 +13,6 @@ public interface CampaignService {
     ResponseEntity<ResponseDto> campaignApplication(int userId, CampaignApplicationRequestDto dto);
 
     ResponseEntity<? super GetCampaignDetailResponseDto> getCampaignDetail(Integer userId, Integer campaignId);
+
+    ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String listSort);
 }

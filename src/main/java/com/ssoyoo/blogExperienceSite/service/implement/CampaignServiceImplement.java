@@ -5,7 +5,9 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationReq
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.*;
+import com.ssoyoo.blogExperienceSite.entity.view.CampaignListViewEntity;
 import com.ssoyoo.blogExperienceSite.repository.*;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class CampaignServiceImplement implements CampaignService {
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
     private final CampaignApplicationRepository campaignApplicationRepository;
+    private final CampaignListViewRepository campaignListViewRepository;
 
 
 
@@ -125,6 +128,31 @@ public class CampaignServiceImplement implements CampaignService {
             int applicationCount = applicaionList.size();
 
             body = new GetCampaignDetailResponseDto(campaignEntity,isApplied,applicationCount);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String listSort) {
+
+        GetCampaignListResponseDto body = null;
+
+        try {
+            List<CampaignListViewEntity> campaignList = null;
+            if(listSort.equalsIgnoreCase("latest")){
+                campaignList = campaignListViewRepository.findByOrderByCreatedAtDesc();
+            }else if(listSort.equalsIgnoreCase("popular")){
+                campaignList =campaignListViewRepository.findByOrderByApplicationCountDesc();
+            }else if(listSort.equalsIgnoreCase("deadline")){
+                campaignList = campaignListViewRepository.findByOrderByReviewRegistrationDeadlineDesc();
+            }else return CustomResponse.validationFail();
+
+            body = new GetCampaignListResponseDto(campaignList);
 
         }catch (Exception exception){
             exception.printStackTrace();

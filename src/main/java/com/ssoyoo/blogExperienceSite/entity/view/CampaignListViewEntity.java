@@ -14,6 +14,8 @@ import javax.persistence.Table;
 public class CampaignListViewEntity {
     @Id
     private int campaignId;
+    private String campaignType;
+    private String location;
     private String title;
     private String photoUrl;
     private String provisionDetail;

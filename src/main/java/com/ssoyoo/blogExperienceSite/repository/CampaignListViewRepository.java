@@ -11,6 +11,9 @@ public interface CampaignListViewRepository extends JpaRepository<CampaignListVi
 
     public List<CampaignListViewEntity> findByOrderByCreatedAtDesc();
     public List<CampaignListViewEntity> findByOrderByApplicationCountDesc();
-    public List<CampaignListViewEntity> findByOrderByReviewRegistrationDeadlineDesc();
+    public List<CampaignListViewEntity> findByOrderByReviewRegistrationDeadline();
+    public List<CampaignListViewEntity> findByCampaignTypeOrderByCreatedAt(String type);
+    public List<CampaignListViewEntity> findByCampaignTypeOrderByApplicationCountDesc(String type);
+    public List<CampaignListViewEntity> findByCampaignTypeOrderByReviewRegistrationDeadline(String type);
 
 }

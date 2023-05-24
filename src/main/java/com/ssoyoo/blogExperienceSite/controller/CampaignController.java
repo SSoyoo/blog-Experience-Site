@@ -63,13 +63,15 @@ public class CampaignController {
         return response;
     }
 
-    @GetMapping("/list/{sort}")
+    @GetMapping("/list/{type}/{sort}")
     public ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(
+            @PathVariable("type") String type,
             @PathVariable("sort") String listSort
+
     ){
 
         ResponseEntity<? super GetCampaignListResponseDto> response =
-                campaignService.getCampaignList(listSort);
+                campaignService.getCampaignList(type,listSort);
 
         return response;
 

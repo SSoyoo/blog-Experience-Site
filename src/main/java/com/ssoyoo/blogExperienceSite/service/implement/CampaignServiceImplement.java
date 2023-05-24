@@ -138,19 +138,42 @@ public class CampaignServiceImplement implements CampaignService {
     }
 
     @Override
-    public ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String listSort) {
+    public ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String type,String listSort) {
 
         GetCampaignListResponseDto body = null;
 
         try {
             List<CampaignListViewEntity> campaignList = null;
-            if(listSort.equalsIgnoreCase("latest")){
-                campaignList = campaignListViewRepository.findByOrderByCreatedAtDesc();
-            }else if(listSort.equalsIgnoreCase("popular")){
-                campaignList =campaignListViewRepository.findByOrderByApplicationCountDesc();
-            }else if(listSort.equalsIgnoreCase("deadline")){
-                campaignList = campaignListViewRepository.findByOrderByReviewRegistrationDeadlineDesc();
-            }else return CustomResponse.validationFail();
+
+            if(type.equalsIgnoreCase("all")){
+
+                if(listSort.equalsIgnoreCase("latest")){
+                    campaignList = campaignListViewRepository.findByOrderByCreatedAtDesc();
+                }else if(listSort.equalsIgnoreCase("popular")){
+                    campaignList = campaignListViewRepository.findByOrderByApplicationCountDesc();
+                }else if(listSort.equalsIgnoreCase("deadline")){
+                    campaignList = campaignListViewRepository.findByOrderByReviewRegistrationDeadline();
+                }
+            } else if (type.equalsIgnoreCase("visit")) {
+
+                if(listSort.equalsIgnoreCase("latest")){
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByCreatedAt("방문형");
+                }else if(listSort.equalsIgnoreCase("popular")){
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByApplicationCountDesc("방문형");
+                }else if(listSort.equalsIgnoreCase("deadline")){
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByReviewRegistrationDeadline("방문형");
+                }
+            } else if (type.equalsIgnoreCase("shipping")){
+
+                if(listSort.equalsIgnoreCase("latest")){
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByCreatedAt("배송형");
+                }else if(listSort.equalsIgnoreCase("popular")){
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByApplicationCountDesc("배송형");
+                }else if(listSort.equalsIgnoreCase("deadline")){
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByReviewRegistrationDeadline("배송형");
+                }
+
+            }
 
             body = new GetCampaignListResponseDto(campaignList);
 

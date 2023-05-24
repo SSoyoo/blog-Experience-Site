@@ -105,6 +105,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> applicationPeriodPassed() {
+
+        ResponseDto errorBody = new ResponseDto("PP", "application period has passed");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
 
 
 

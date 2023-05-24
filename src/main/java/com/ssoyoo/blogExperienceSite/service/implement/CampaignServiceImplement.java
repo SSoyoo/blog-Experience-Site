@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -70,17 +72,23 @@ public class CampaignServiceImplement implements CampaignService {
             UserEntity userEntity = userRepository.findByUserId(userId);
             if(userEntity == null) return CustomResponse.noExistUser();
 
-            boolean isExistCampaign = campaignRepository.existsById(campaignId);
-            if(!isExistCampaign) return CustomResponse.noExistCampaign();
+            CampaignEntity campaignEntity =
+                    campaignRepository.findByCampaignId(campaignId);
+            if(campaignEntity == null) return CustomResponse.noExistCampaign();
 
             boolean isExistApplication =
                     campaignApplicationRepository.existsByUserIdAndCampaignId(userId,campaignId);
             if(isExistApplication) return CustomResponse.existApplication();
 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            LocalDateTime deadline = LocalDateTime.parse(campaignEntity.getRecruitmentDeadline(), formatter);
+            LocalDateTime now = LocalDateTime.now();
+
+            if(now.isAfter(deadline)) return CustomResponse.applicationPeriodPassed();
+
             CampaignApplicationEntity campaignApplicationEntity =
                     new CampaignApplicationEntity(userEntity, dto);
-
-            //TODO : 신청 마감일이 지난 경우 작성필요
 
             campaignApplicationRepository.save(campaignApplicationEntity);
 

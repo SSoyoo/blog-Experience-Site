@@ -56,8 +56,6 @@ public class GetCampaignDetailResponseDto extends ResponseDto {
         this.reviewRegistrationStartDate = campaignEntity.getReviewRegistrationStartDate();
         this.reviewRegistrationDeadline = campaignEntity.getReviewRegistrationDeadline();
         this.campaignEndDate = campaignEntity.getCampaignEndDate();
-
-
         this.isApplied = isApplied;
     }
 }

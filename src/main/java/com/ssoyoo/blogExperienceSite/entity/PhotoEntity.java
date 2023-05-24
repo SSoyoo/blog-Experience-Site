@@ -21,10 +21,12 @@ public class PhotoEntity {
     private int campaignId;
     @Id
     private String photoUrl;
+    private boolean mainPhoto;
 
-    public PhotoEntity(int campaignId, String photoUrl) {
+    public PhotoEntity(int campaignId, String photoUrl, boolean isMainPhoto) {
 
         this.campaignId = campaignId;
         this.photoUrl = photoUrl;
+        this.mainPhoto = isMainPhoto;
     }
 }

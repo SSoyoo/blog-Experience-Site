@@ -29,10 +29,11 @@ public class CampaignServiceImplement implements CampaignService {
     private final CampaignApplicationRepository campaignApplicationRepository;
 
 
+
     @Override
     public ResponseEntity<ResponseDto> postCampaign(String adminEmail, PostCampaignRequestDto dto) {
 
-        List<String>dtoPhotoList = dto.getPhotoUrlList();
+        List<String>photos = dto.getPhotoUrlList();
         List<PhotoEntity> campaignPhotoList = new ArrayList<>();
 
         try {
@@ -45,11 +46,13 @@ public class CampaignServiceImplement implements CampaignService {
 
             int campaignId = campaignEntity.getCampaignId();
 
-            for(String photoUrl : dtoPhotoList){
-                PhotoEntity photoEntity = new PhotoEntity(campaignId, photoUrl);
+            for(int i = 0 ; i<photos.size() ; i++){
+
+                String photoUrl = photos.get(i);
+                boolean isMainPhoto = (i == 0);
+                PhotoEntity photoEntity = new PhotoEntity(campaignId,photoUrl,isMainPhoto);
                 campaignPhotoList.add(photoEntity);
             }
-
             photoRepository.saveAll(campaignPhotoList);
 
 

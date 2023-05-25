@@ -25,4 +25,6 @@ public interface CampaignService {
     ResponseEntity<ResponseDto> updateApplication(Integer userId, UpdateApplicationRequestDto dto);
 
     ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(int userId);
+
+    ResponseEntity<ResponseDto> deleteApplication(int userId, int campaignId);
 }

@@ -129,6 +129,19 @@ public class CampaignController {
 
     }
 
+    @DeleteMapping("/application/{campaignId}")
+    public ResponseEntity<ResponseDto> deleteApplication(
+        @AuthenticationPrincipal UserPrincipal userPrincipal,
+        @PathVariable("campaignId") int campaignId
+
+    ){
+
+        int userId = userPrincipal.getUserId();
+        ResponseEntity<ResponseDto> response = campaignService.deleteApplication(userId,campaignId);
+
+        return response;
+
+    }
 
 
 

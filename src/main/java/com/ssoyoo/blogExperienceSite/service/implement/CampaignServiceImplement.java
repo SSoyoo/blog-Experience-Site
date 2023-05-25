@@ -278,4 +278,28 @@ public class CampaignServiceImplement implements CampaignService {
     public ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(int userId) {
         return null;
     }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteApplication(int userId, int campaignId) {
+
+        try {
+
+            boolean isExistUser = userRepository.existsByUserId(userId);
+            if(!isExistUser) return CustomResponse.authenticationFail();
+
+            boolean isExistCampaign = campaignRepository.existsByCampaignId(campaignId);
+            if(!isExistCampaign) return CustomResponse.noExistCampaign();
+
+            CampaignApplicationEntity campaignApplicationEntity =
+                    campaignApplicationRepository.findByUserIdAndCampaignId(userId,campaignId);
+
+            if(campaignApplicationEntity == null) return CustomResponse.noExistApplication();
+            campaignApplicationRepository.delete(campaignApplicationEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+        return CustomResponse.success();
+    }
 }

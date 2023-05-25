@@ -31,6 +31,7 @@ public class CampaignApplicationEntity {
     private boolean precautionsAgree;
     private boolean selectionStatus;
     private String applicationDate;
+    private boolean reviewStatus;
 
 
     public CampaignApplicationEntity(

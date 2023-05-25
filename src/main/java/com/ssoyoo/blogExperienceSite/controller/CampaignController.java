@@ -7,6 +7,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationReque
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
+import com.ssoyoo.blogExperienceSite.repository.CampaignListViewRepository;
 import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
@@ -88,6 +89,19 @@ public class CampaignController {
         ResponseEntity<ResponseDto> response = campaignService.postFavorite(userId,campaignId);
 
         return response;
+
+    }
+
+    @GetMapping("application/my")
+    public ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ){
+
+        int userId = userPrincipal.getUserId();
+        ResponseEntity<? super CampaignListViewRepository> response =
+                campaignService.getMyApplicationList(userId);
+        return response;
+
 
     }
 

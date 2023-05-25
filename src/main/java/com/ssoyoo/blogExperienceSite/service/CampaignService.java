@@ -6,6 +6,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationReque
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
+import com.ssoyoo.blogExperienceSite.repository.CampaignListViewRepository;
 import org.springframework.http.ResponseEntity;
 
 public interface CampaignService {
@@ -22,4 +23,6 @@ public interface CampaignService {
     ResponseEntity<ResponseDto> deleteFavorite(Integer userId, Integer campaignId);
 
     ResponseEntity<ResponseDto> updateApplication(Integer userId, UpdateApplicationRequestDto dto);
+
+    ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(int userId);
 }

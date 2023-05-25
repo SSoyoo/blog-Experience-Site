@@ -134,12 +134,10 @@ public class CustomResponse {
     }
 
 
+    public static ResponseEntity<ResponseDto> noPermission() {
 
+        ResponseDto errorBody = new ResponseDto("NP", "No permission");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
 
-
-
-
-
-
-
+    }
 }

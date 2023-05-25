@@ -271,10 +271,11 @@ public class CampaignServiceImplement implements CampaignService {
             return CustomResponse.databaseError();
         }
 
-
-
-
-
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(int userId) {
+        return null;
     }
 }

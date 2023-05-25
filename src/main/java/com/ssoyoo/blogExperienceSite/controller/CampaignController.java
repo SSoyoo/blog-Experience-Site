@@ -7,6 +7,8 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationReque
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationOngoingResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationSelectedResponseDto;
 import com.ssoyoo.blogExperienceSite.repository.CampaignListViewRepository;
 import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
@@ -92,16 +94,30 @@ public class CampaignController {
 
     }
 
-    @GetMapping("application/my")
-    public ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(
+    @GetMapping("/application/my/ongoing")
+    public ResponseEntity<? super GetMyApplicationOngoingResponseDto> getMyOngoingApplicationList(
             @AuthenticationPrincipal UserPrincipal userPrincipal
+
+    ){
+        int userId = userPrincipal.getUserId();
+        ResponseEntity<? super GetMyApplicationOngoingResponseDto> response =
+                campaignService.getOngoingList(userId);
+
+        return response;
+
+    }
+
+    @GetMapping("/application/my/selected/{sort}")
+    public ResponseEntity<? super GetMyApplicationSelectedResponseDto> getMySelectedApplicationList(
+        @PathVariable("sort") String sort,
+        @AuthenticationPrincipal UserPrincipal userPrincipal
     ){
 
         int userId = userPrincipal.getUserId();
-        ResponseEntity<? super CampaignListViewRepository> response =
-                campaignService.getMyApplicationList(userId);
-        return response;
+        ResponseEntity<? super  GetMyApplicationSelectedResponseDto> response =
+                campaignService.getSelectedList(userId,sort);
 
+        return response;
 
     }
 

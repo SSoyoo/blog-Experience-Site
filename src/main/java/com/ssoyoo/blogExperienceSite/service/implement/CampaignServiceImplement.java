@@ -7,8 +7,11 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationReque
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationOngoingResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationSelectedResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.*;
 import com.ssoyoo.blogExperienceSite.entity.view.CampaignListViewEntity;
+import com.ssoyoo.blogExperienceSite.entity.view.GetMyApplicationViewEntity;
 import com.ssoyoo.blogExperienceSite.repository.*;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +35,7 @@ public class CampaignServiceImplement implements CampaignService {
     private final CampaignApplicationRepository campaignApplicationRepository;
     private final CampaignListViewRepository campaignListViewRepository;
     private final FavoriteCampaignRepository favoriteCampaignRepository;
+    private final GetMyApplicationViewRepository getMyApplicationViewRepository;
 
 
 
@@ -59,10 +63,6 @@ public class CampaignServiceImplement implements CampaignService {
                 campaignPhotoList.add(photoEntity);
             }
             photoRepository.saveAll(campaignPhotoList);
-
-
-
-
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -274,10 +274,6 @@ public class CampaignServiceImplement implements CampaignService {
         return CustomResponse.success();
     }
 
-    @Override
-    public ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(int userId) {
-        return null;
-    }
 
     @Override
     public ResponseEntity<ResponseDto> deleteApplication(int userId, int campaignId) {
@@ -301,5 +297,78 @@ public class CampaignServiceImplement implements CampaignService {
             return CustomResponse.databaseError();
         }
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetMyApplicationOngoingResponseDto> getOngoingList(int userId) {
+
+        GetMyApplicationOngoingResponseDto body = null;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String formattedNow = now.format(formatter);
+
+        try {
+            List<GetMyApplicationViewEntity> campaignList =
+                        getMyApplicationViewRepository
+                        .findByCampaignEndDateGreaterThanAndUserId(formattedNow,userId);
+
+            body = new GetMyApplicationOngoingResponseDto(campaignList);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetMyApplicationSelectedResponseDto> getSelectedList(int userId, String sort) {
+
+        GetMyApplicationSelectedResponseDto body = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String formattedNow = now.format(formatter);
+
+
+        try {
+
+            List<GetMyApplicationViewEntity> campaignList = null;
+
+            if(sort.equalsIgnoreCase("all")){
+
+                campaignList = getMyApplicationViewRepository.
+                        findByCampaignEndDateGreaterThanAndUserIdAndSelectionStatus(formattedNow,userId,true);
+
+                body = new GetMyApplicationSelectedResponseDto(campaignList);
+
+                
+            } else if(sort.equalsIgnoreCase("posted")){
+
+                campaignList =
+                        getMyApplicationViewRepository.
+                        findByCampaignEndDateGreaterThanAndUserIdAndReviewStatus(formattedNow,userId,true);
+
+                body = new GetMyApplicationSelectedResponseDto(campaignList);
+                
+            } else if (sort.equalsIgnoreCase("complete")) {
+
+                campaignList =
+                        getMyApplicationViewRepository.
+                        findByCampaignEndDateLessThanAndUserIdAndReviewStatus(formattedNow,userId,true);
+
+                body = new GetMyApplicationSelectedResponseDto(campaignList);
+                
+            } else return CustomResponse.validationFail();
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }

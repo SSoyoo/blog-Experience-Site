@@ -6,7 +6,8 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationReque
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
-import com.ssoyoo.blogExperienceSite.repository.CampaignListViewRepository;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationOngoingResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationSelectedResponseDto;
 import org.springframework.http.ResponseEntity;
 
 public interface CampaignService {
@@ -24,7 +25,9 @@ public interface CampaignService {
 
     ResponseEntity<ResponseDto> updateApplication(Integer userId, UpdateApplicationRequestDto dto);
 
-    ResponseEntity<? super CampaignListViewRepository> getMyApplicationList(int userId);
-
     ResponseEntity<ResponseDto> deleteApplication(int userId, int campaignId);
+
+    ResponseEntity<? super GetMyApplicationOngoingResponseDto> getOngoingList(int userId);
+
+    ResponseEntity<? super GetMyApplicationSelectedResponseDto> getSelectedList(int userId, String sort);
 }

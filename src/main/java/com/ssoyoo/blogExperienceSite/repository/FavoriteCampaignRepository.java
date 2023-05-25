@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface FavoriteCampaignRepository extends JpaRepository<FavoriteCampaignEntity, FavoriteCampaignPk> {
 
     public boolean existsByUserIdAndCampaignId(Integer userId, Integer campaignId);
+    public FavoriteCampaignEntity findByUserIdAndCampaignId(Integer userId , Integer campaignId);
 }

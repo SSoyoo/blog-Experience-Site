@@ -3,6 +3,7 @@ package com.ssoyoo.blogExperienceSite.service.implement;
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
@@ -112,7 +113,7 @@ public class CampaignServiceImplement implements CampaignService {
 
     @Override
     public ResponseEntity<? super GetCampaignDetailResponseDto> getCampaignDetail(Integer userId, Integer campaignId) {
-
+        //TODO : 관심등록 여부 로직 추가 해야 함!
         GetCampaignDetailResponseDto body = null;
         boolean isApplied = false;
 
@@ -187,14 +188,14 @@ public class CampaignServiceImplement implements CampaignService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> postInterest(Integer userId, Integer campaignId) {
+    public ResponseEntity<ResponseDto> postFavorite(Integer userId, Integer campaignId) {
 
         try{
 
-            boolean isExistUser = userRepository.existsById(userId);
+            boolean isExistUser = userRepository.existsByUserId(userId);
             if(!isExistUser) return CustomResponse.authenticationFail();
 
-            boolean isExistCampaign = campaignRepository.existsById(campaignId);
+            boolean isExistCampaign = campaignRepository.existsByCampaignId(campaignId);
             if(!isExistCampaign) return CustomResponse.noExistCampaign();
 
             boolean isExistFavorite
@@ -213,6 +214,66 @@ public class CampaignServiceImplement implements CampaignService {
             return CustomResponse.databaseError();
 
         }
+
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteFavorite(Integer userId, Integer campaignId) {
+
+        try{
+
+            boolean isExistUser = userRepository.existsByUserId(userId);
+            if(!isExistUser) return CustomResponse.authenticationFail();
+
+            boolean isExistCampaign = campaignRepository.existsByCampaignId(campaignId);
+            if(!isExistCampaign) return CustomResponse.noExistCampaign();
+
+            FavoriteCampaignEntity favoriteCampaignEntity =
+                    favoriteCampaignRepository.findByUserIdAndCampaignId(userId,campaignId);
+
+            if(favoriteCampaignEntity == null) return CustomResponse.noExistFavorite();
+            favoriteCampaignRepository.delete(favoriteCampaignEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> updateApplication(Integer userId, UpdateApplicationRequestDto dto) {
+
+        int campaignId = dto.getCampaignId();
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if(userEntity == null) return CustomResponse.authenticationFail();
+
+            CampaignEntity campaignEntity = campaignRepository.findByCampaignId(campaignId);
+            if(campaignEntity ==  null) return CustomResponse.noExistCampaign();
+
+            CampaignApplicationEntity campaignApplicationEntity =
+                    campaignApplicationRepository.findByUserIdAndCampaignId(userId,campaignId);
+
+            if(campaignApplicationEntity == null) return CustomResponse.noExistApplication();
+
+            CampaignApplicationEntity updateApplicationEntity =
+                    new CampaignApplicationEntity(userEntity,dto,campaignApplicationEntity);
+
+            campaignApplicationRepository.save(updateApplicationEntity);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+
+
+
 
         return CustomResponse.success();
     }

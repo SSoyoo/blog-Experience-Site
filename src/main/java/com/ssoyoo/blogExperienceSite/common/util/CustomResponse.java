@@ -119,6 +119,20 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> noExistFavorite() {
+
+        ResponseDto errorBody = new ResponseDto("NF", "Non-Existent Favorite");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
+    public static ResponseEntity<ResponseDto> noExistApplication() {
+
+        ResponseDto errorBody = new ResponseDto("NA", "Non-Existent Application");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
 
 
 

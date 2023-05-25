@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CampaignRepository extends JpaRepository<CampaignEntity, Integer> {
 
     public CampaignEntity findByCampaignId(Integer id);
-
+    public boolean existsByCampaignId(Integer campaignId);
 }

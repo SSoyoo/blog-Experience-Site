@@ -2,6 +2,7 @@ package com.ssoyoo.blogExperienceSite.service;
 
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
@@ -16,5 +17,9 @@ public interface CampaignService {
 
     ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String type,String listSort);
 
-    ResponseEntity<ResponseDto> postInterest(Integer userId, Integer campaignId);
+    ResponseEntity<ResponseDto> postFavorite(Integer userId, Integer campaignId);
+
+    ResponseEntity<ResponseDto> deleteFavorite(Integer userId, Integer campaignId);
+
+    ResponseEntity<ResponseDto> updateApplication(Integer userId, UpdateApplicationRequestDto dto);
 }

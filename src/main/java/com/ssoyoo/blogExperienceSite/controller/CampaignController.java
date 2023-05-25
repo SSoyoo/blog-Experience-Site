@@ -3,6 +3,7 @@ package com.ssoyoo.blogExperienceSite.controller;
 
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
@@ -78,19 +79,41 @@ public class CampaignController {
     }
 
     @GetMapping("favorite/{campaignId}")
-    public ResponseEntity<ResponseDto> postInterest(
+    public ResponseEntity<ResponseDto> postFavorite(
             @PathVariable("campaignId") Integer campaignId,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ){
 
         Integer userId = userPrincipal.getUserId();
-        ResponseEntity<ResponseDto> response = campaignService.postInterest(userId,campaignId);
+        ResponseEntity<ResponseDto> response = campaignService.postFavorite(userId,campaignId);
 
         return response;
 
     }
 
+    @PatchMapping("application")
+    public ResponseEntity<ResponseDto> updateApplication(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @Valid @RequestBody UpdateApplicationRequestDto dto
 
-    
+            ){
+        Integer userId = userPrincipal.getUserId();
+        ResponseEntity<ResponseDto> response = campaignService.updateApplication(userId, dto);
+        return response;
+    }
+
+    @DeleteMapping("favorite/{campaignId}")
+    public ResponseEntity<ResponseDto> deleteFavorite(
+            @PathVariable("campaignId") Integer campaignId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ){
+
+        Integer userId = userPrincipal.getUserId();
+        ResponseEntity<ResponseDto> response = campaignService.deleteFavorite(userId,campaignId);
+
+        return response;
+
+    }
+
 
 }

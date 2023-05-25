@@ -1,6 +1,7 @@
 package com.ssoyoo.blogExperienceSite.entity;
 
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.entity.pk.CampaignApplicationPk;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,27 @@ public class CampaignApplicationEntity {
         this.userComment = dto.getUserComment();
         this.precautionsAgree = dto.isPrecautionsAgree();
         this.applicationDate = createdTime;
+
+    }
+
+
+    public CampaignApplicationEntity(
+            UserEntity userEntity,
+            UpdateApplicationRequestDto dto,
+            CampaignApplicationEntity campaignApplicationEntity
+
+    ) {
+
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String updatedTime = simpleDateFormat.format(now);
+
+        this.userId = userEntity.getUserId();
+        this.campaignId = dto.getCampaignId();
+        this.blogAddress = campaignApplicationEntity.getBlogAddress();
+        this.userComment = dto.getUserComment();
+        this.precautionsAgree = campaignApplicationEntity.isPrecautionsAgree();
+        this.applicationDate = updatedTime;
 
     }
 }

@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity(name = "review")
 @Table(name = "review")
@@ -31,6 +33,17 @@ public class ReviewEntity {
 
 
     public ReviewEntity(int userId, PostReviewRequestDto dto) {
+
+        Date now = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String createdTime = simpleDateFormat.format(now);
+
         this.userId = userId;
+        this.campaignId = dto.getCampaignId();
+        this.reviewTitle = dto.getReviewTitle();
+        this.reviewAddress = dto.getReviewAddress();
+        this.campaignEvaluation = dto.getCampaignEvaluation();
+        this.opinion = dto.getOpinion();
+        this.createdAt = createdTime;
     }
 }

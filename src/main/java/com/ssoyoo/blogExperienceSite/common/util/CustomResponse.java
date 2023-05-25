@@ -140,4 +140,9 @@ public class CustomResponse {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorBody);
 
     }
+
+    public static ResponseEntity<ResponseDto> existReview() {
+        ResponseDto errorBody = new ResponseDto("ER", "Existent Review");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
 }

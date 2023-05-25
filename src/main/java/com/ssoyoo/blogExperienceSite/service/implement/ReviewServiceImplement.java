@@ -31,19 +31,20 @@ public class ReviewServiceImplement implements ReviewService {
             boolean isExistUser = userRepository.existsByUserId(userId);
             if(!isExistUser) return CustomResponse.noExistUser();
 
-            //신청하지 않은 캠페인
             CampaignApplicationEntity campaignApplicationEntity =
                     campaignApplicationRepository.findByUserIdAndCampaignId(userId,campaign);
 
             if(campaignApplicationEntity == null) return  CustomResponse.noExistApplication();
-            //신청은 했는데 선정되지 않은 캠페인
+
             boolean isSelectedCampaign = campaignApplicationEntity.isSelectionStatus();
             if(!isSelectedCampaign) return CustomResponse.noPermission();
+
+            boolean isExistReview = reviewRepository.existsByUserIdAndCampaignId(userId,campaign);
+            if(isExistReview) return CustomResponse.existReview();
 
             ReviewEntity reviewEntity = new ReviewEntity(userId,dto);
             reviewRepository.save(reviewEntity);
 
-            //저장되고 나면 캠페인 신청테이블에 리뷰 작성상태 바꾸기.
             campaignApplicationEntity.setReviewStatus(true);
             campaignApplicationRepository.save(campaignApplicationEntity);
 
@@ -51,8 +52,6 @@ public class ReviewServiceImplement implements ReviewService {
             exception.printStackTrace();
             return CustomResponse.databaseError();
         }
-
-
 
         return CustomResponse.success();
     }

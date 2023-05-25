@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReviewRepository extends JpaRepository<ReviewEntity, ReviewEntityPk> {
 
+    public boolean existsByUserIdAndCampaignId(Integer userId, Integer campaignId);
+
 
 }

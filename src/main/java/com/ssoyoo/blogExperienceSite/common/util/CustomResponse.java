@@ -112,6 +112,13 @@ public class CustomResponse {
 
     }
 
+    public static ResponseEntity<ResponseDto> existFavorite() {
+
+        ResponseDto errorBody = new ResponseDto("EF", "Existent Favorite");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+
+    }
+
 
 
 

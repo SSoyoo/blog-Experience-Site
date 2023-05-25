@@ -75,6 +75,18 @@ public class CampaignController {
 
         return response;
 
+    }
+
+    @GetMapping("favorite/{campaignId}")
+    public ResponseEntity<ResponseDto> postInterest(
+            @PathVariable("campaignId") Integer campaignId,
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ){
+
+        Integer userId = userPrincipal.getUserId();
+        ResponseEntity<ResponseDto> response = campaignService.postInterest(userId,campaignId);
+
+        return response;
 
     }
 

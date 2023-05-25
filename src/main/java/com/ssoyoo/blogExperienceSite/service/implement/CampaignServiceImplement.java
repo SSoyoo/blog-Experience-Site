@@ -30,6 +30,7 @@ public class CampaignServiceImplement implements CampaignService {
     private final UserRepository userRepository;
     private final CampaignApplicationRepository campaignApplicationRepository;
     private final CampaignListViewRepository campaignListViewRepository;
+    private final FavoriteCampaignRepository favoriteCampaignRepository;
 
 
 
@@ -183,5 +184,36 @@ public class CampaignServiceImplement implements CampaignService {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postInterest(Integer userId, Integer campaignId) {
+
+        try{
+
+            boolean isExistUser = userRepository.existsById(userId);
+            if(!isExistUser) return CustomResponse.authenticationFail();
+
+            boolean isExistCampaign = campaignRepository.existsById(campaignId);
+            if(!isExistCampaign) return CustomResponse.noExistCampaign();
+
+            boolean isExistFavorite
+                    = favoriteCampaignRepository.existsByUserIdAndCampaignId(userId,campaignId);
+
+            if(isExistFavorite) return CustomResponse.existFavorite();
+
+            FavoriteCampaignEntity favoriteCampaignEntity
+                    = new FavoriteCampaignEntity(userId,campaignId);
+
+            favoriteCampaignRepository.save(favoriteCampaignEntity);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+
+        }
+
+        return CustomResponse.success();
     }
 }

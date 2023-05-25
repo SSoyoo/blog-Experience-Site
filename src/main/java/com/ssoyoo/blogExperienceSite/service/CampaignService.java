@@ -15,4 +15,6 @@ public interface CampaignService {
     ResponseEntity<? super GetCampaignDetailResponseDto> getCampaignDetail(Integer userId, Integer campaignId);
 
     ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String type,String listSort);
+
+    ResponseEntity<ResponseDto> postInterest(Integer userId, Integer campaignId);
 }

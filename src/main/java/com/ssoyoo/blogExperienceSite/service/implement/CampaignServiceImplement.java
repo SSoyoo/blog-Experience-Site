@@ -3,6 +3,7 @@ package com.ssoyoo.blogExperienceSite.service.implement;
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
@@ -399,5 +400,51 @@ public class CampaignServiceImplement implements CampaignService {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> selectReviewer(String adminEmail, SelectReviewerRequestDto dto) {
+
+        List<Integer> userList = dto.getUserList();
+        int appliedCount = userList.size();
+        int campaignId = dto.getCampaignId();
+
+        try {
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFail();
+
+            if (appliedCount == 0 ) return CustomResponse.doNotSelectUser();
+
+            CampaignEntity campaignEntity = campaignRepository.findByCampaignId(campaignId);
+            if(campaignEntity == null) return CustomResponse.noExistCampaign();
+
+            boolean isDoneSelect = campaignEntity.isDoneSelect();
+            if(isDoneSelect) return CustomResponse.selectionIsDone();
+
+            int recruitNumber = campaignEntity.getRecruitsNumber();
+            if(appliedCount > recruitNumber) return CustomResponse.excessOfRecruitment();
+
+            campaignEntity.setDoneSelect(true);
+            campaignRepository.save(campaignEntity);
+
+            for(Integer userId : userList){
+
+                CampaignApplicationEntity campaignApplicationEntity =
+                        campaignApplicationRepository.findByUserIdAndCampaignId(userId,campaignId);
+
+                if(campaignApplicationEntity == null) return CustomResponse.noExistApplication();
+
+                campaignApplicationEntity.setSelectionStatus(true);
+                campaignApplicationRepository.save(campaignApplicationEntity);
+
+            }
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
 }

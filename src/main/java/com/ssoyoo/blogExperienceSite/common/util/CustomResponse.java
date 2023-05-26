@@ -145,4 +145,19 @@ public class CustomResponse {
         ResponseDto errorBody = new ResponseDto("ER", "Existent Review");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
+
+    public static ResponseEntity<ResponseDto> doNotSelectUser() {
+        ResponseDto errorBody = new ResponseDto("NS", "Do not selected User");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> excessOfRecruitment() {
+        ResponseDto errorBody = new ResponseDto("ER", "Excess Of Recruitment");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    public static ResponseEntity<ResponseDto> selectionIsDone() {
+        ResponseDto errorBody = new ResponseDto("SD", "Reviewer selection Is Done ");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
 }

@@ -2,6 +2,7 @@ package com.ssoyoo.blogExperienceSite.service;
 
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
@@ -29,4 +30,6 @@ public interface CampaignService {
     ResponseEntity<? super GetMyApplicationSelectedResponseDto> getSelectedList(int userId, String sort);
 
     ResponseEntity<? super GetAppliedUserListResponseDto> getAppliedUserList(String adminEmail, Integer campaignId);
+
+    ResponseEntity<ResponseDto> selectReviewer(String adminEmail, SelectReviewerRequestDto dto);
 }

@@ -4,10 +4,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationReq
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationOngoingResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationSelectedResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
 import org.springframework.http.ResponseEntity;
 
 public interface CampaignService {
@@ -30,4 +27,6 @@ public interface CampaignService {
     ResponseEntity<? super GetMyApplicationOngoingResponseDto> getOngoingList(int userId);
 
     ResponseEntity<? super GetMyApplicationSelectedResponseDto> getSelectedList(int userId, String sort);
+
+    ResponseEntity<? super GetAppliedUserListResponseDto> getAppliedUserList(String adminEmail, Integer campaignId);
 }

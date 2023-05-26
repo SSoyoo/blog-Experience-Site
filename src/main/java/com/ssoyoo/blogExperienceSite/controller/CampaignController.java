@@ -2,15 +2,12 @@ package com.ssoyoo.blogExperienceSite.controller;
 
 
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationOngoingResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationSelectedResponseDto;
-import com.ssoyoo.blogExperienceSite.repository.CampaignListViewRepository;
-import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
@@ -28,29 +25,18 @@ public class CampaignController {
 
     private final CampaignService campaignService;
 
-    @PostMapping("")
-    public ResponseEntity<ResponseDto> postCampaign(
-            @Valid @RequestBody PostCampaignRequestDto dto,
-            @AuthenticationPrincipal AdminPrincipal adminPrincipal
-            ){
-
-        String adminEmail = adminPrincipal.getEmail();
-
-        ResponseEntity<ResponseDto> response = campaignService.postCampaign(adminEmail, dto);
-        return response;
-
-    }
     @PostMapping("/application")
     public ResponseEntity<ResponseDto> campaignApplication(
             @Valid @RequestBody CampaignApplicationRequestDto dto,
             @AuthenticationPrincipal UserPrincipal userPrincipal
-            ){
+    ){
 
         int userId = userPrincipal.getUserId();
         ResponseEntity<ResponseDto> response = campaignService.campaignApplication(userId,dto);
         return response;
 
     }
+
 
     @GetMapping("/{campaignId}")
     public ResponseEntity<? super GetCampaignDetailResponseDto> getCampaignDetail(

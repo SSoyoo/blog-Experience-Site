@@ -36,6 +36,7 @@ public class CampaignEntity {
     private String reviewRegistrationStartDate;
     private String reviewRegistrationDeadline;
     private String campaignEndDate;
+    private boolean isDoneSelect;
     private String createdAt;
     private String updatedAt;
 
@@ -47,10 +48,10 @@ public class CampaignEntity {
 
         LocalDate recruitmentStartDate = LocalDate.parse(dto.getRecruitmentStartDate(), campaignFormatter);
         LocalDate recruitmentDeadline = recruitmentStartDate.plusDays(10);
-        LocalDate reviewerSelectionDate = recruitmentStartDate.plusDays(11);
-        LocalDate reviewRegistrationStartDate = recruitmentStartDate.plusDays(12);
-        LocalDate reviewRegistrationDeadline = recruitmentStartDate.plusDays(20);
-        LocalDate campaignEndDate = recruitmentStartDate.plusDays(21);
+        LocalDate reviewerSelectionDate = recruitmentStartDate.plusDays(12);
+        LocalDate reviewRegistrationStartDate = recruitmentStartDate.plusDays(13);
+        LocalDate reviewRegistrationDeadline = recruitmentStartDate.plusDays(21);
+        LocalDate campaignEndDate = recruitmentStartDate.plusDays(22);
 
         String formattedStartDate = recruitmentStartDate.format(campaignFormatter);
         String formattedDeadline = recruitmentDeadline.format(campaignFormatter);

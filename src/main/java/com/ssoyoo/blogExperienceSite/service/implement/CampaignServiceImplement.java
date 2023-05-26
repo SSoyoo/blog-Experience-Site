@@ -5,14 +5,15 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationReq
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationOngoingResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationSelectedResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
 import com.ssoyoo.blogExperienceSite.entity.*;
 import com.ssoyoo.blogExperienceSite.entity.view.CampaignListViewEntity;
+import com.ssoyoo.blogExperienceSite.entity.view.GetAppliedUserListViewEntity;
 import com.ssoyoo.blogExperienceSite.entity.view.GetMyApplicationViewEntity;
 import com.ssoyoo.blogExperienceSite.repository.*;
+import com.ssoyoo.blogExperienceSite.repository.view.CampaignListViewRepository;
+import com.ssoyoo.blogExperienceSite.repository.view.GetAppliedUserListViewRepository;
+import com.ssoyoo.blogExperienceSite.repository.view.GetMyApplicationViewRepository;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public class CampaignServiceImplement implements CampaignService {
     private final CampaignListViewRepository campaignListViewRepository;
     private final FavoriteCampaignRepository favoriteCampaignRepository;
     private final GetMyApplicationViewRepository getMyApplicationViewRepository;
+    private final GetAppliedUserListViewRepository getAppliedUserListViewRepository;
 
 
 
@@ -363,6 +365,33 @@ public class CampaignServiceImplement implements CampaignService {
                 
             } else return CustomResponse.validationFail();
 
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetAppliedUserListResponseDto> getAppliedUserList(
+            String adminEmail,
+            Integer campaignId
+    ) {
+
+        GetAppliedUserListResponseDto body = null;
+
+        try {
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFail();
+
+            List<GetAppliedUserListViewEntity> userList =
+                    getAppliedUserListViewRepository.findByCampaignId(campaignId);
+            System.out.println(userList.toString());
+
+            body = new GetAppliedUserListResponseDto(userList);
 
         }catch (Exception exception){
             exception.printStackTrace();

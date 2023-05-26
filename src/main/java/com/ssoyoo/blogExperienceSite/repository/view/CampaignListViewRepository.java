@@ -1,4 +1,4 @@
-package com.ssoyoo.blogExperienceSite.repository;
+package com.ssoyoo.blogExperienceSite.repository.view;
 
 import com.ssoyoo.blogExperienceSite.entity.view.CampaignListViewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

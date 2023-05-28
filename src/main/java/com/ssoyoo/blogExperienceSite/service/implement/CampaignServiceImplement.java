@@ -2,6 +2,7 @@ package com.ssoyoo.blogExperienceSite.service.implement;
 
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.PatchCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
@@ -477,5 +478,29 @@ public class CampaignServiceImplement implements CampaignService {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> updateCampaign(String adminEmail, PatchCampaignRequestDto dto) {
+        int campaignId = dto.getCampaignId();
+
+        try {
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFail();
+
+            CampaignEntity campaignEntity = campaignRepository.findByCampaignId(campaignId);
+            if(campaignEntity == null) return CustomResponse.noExistCampaign();
+
+            CampaignEntity updateCampaign = new CampaignEntity(campaignEntity,dto);
+
+            campaignRepository.save(updateCampaign);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
 }

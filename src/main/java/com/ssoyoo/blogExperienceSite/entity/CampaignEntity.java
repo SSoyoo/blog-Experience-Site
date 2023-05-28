@@ -1,5 +1,6 @@
 package com.ssoyoo.blogExperienceSite.entity;
 
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.PatchCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -77,6 +78,31 @@ public class CampaignEntity {
         this.reviewRegistrationStartDate = formattedRegistrationStartDate;
         this.reviewRegistrationDeadline = formattedRegistrationDeadline;
         this.campaignEndDate = formattedRegistrationEndDate;
+        this.createdAt = now.format(managementFormatter);
+
+    }
+
+    public CampaignEntity(CampaignEntity campaignEntity, PatchCampaignRequestDto dto) {
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter managementFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.campaignId = campaignEntity.getCampaignId();
+        this.campaignType = campaignEntity.getCampaignType();
+        this.category = campaignEntity.getCategory();
+        this.title = dto.getTitle();
+        this.provisionDetail = dto.getProvisionDetail();
+        this.information = dto.getInformation();
+        this.location = campaignEntity.getLocation();
+        this.precaution = dto.getPrecaution();
+        this.mission = dto.getMission();
+        this.recruitsNumber = dto.getRecruitsNumber();
+        this.searchKeyword = dto.getSearchKeyword();
+        this.recruitmentStartDate = campaignEntity.getRecruitmentStartDate();
+        this.recruitmentDeadline = campaignEntity.getRecruitmentDeadline();
+        this.reviewerSelectionDate = campaignEntity.getReviewerSelectionDate();
+        this.reviewRegistrationStartDate = campaignEntity.getReviewRegistrationStartDate();
+        this.reviewRegistrationDeadline = campaignEntity.getReviewRegistrationDeadline();
+        this.campaignEndDate = campaignEntity.getCampaignEndDate();
         this.createdAt = now.format(managementFormatter);
 
     }

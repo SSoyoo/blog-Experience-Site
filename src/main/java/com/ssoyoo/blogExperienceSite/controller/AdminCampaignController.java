@@ -1,5 +1,6 @@
 package com.ssoyoo.blogExperienceSite.controller;
 
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.PatchCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
@@ -75,6 +76,20 @@ public class AdminCampaignController {
         ResponseEntity<ResponseDto> response
                 = campaignService.selectReviewer(adminEmail,dto);
 
+        return response;
+
+    }
+
+    @PatchMapping("")
+    public ResponseEntity<ResponseDto> updateCampaign(
+            @AuthenticationPrincipal AdminPrincipal adminPrincipal,
+            @Valid @RequestBody PatchCampaignRequestDto dto
+            ){
+
+        String adminEmail = adminPrincipal.getEmail();
+
+        ResponseEntity<ResponseDto> response =
+                campaignService.updateCampaign(adminEmail, dto);
         return response;
 
     }

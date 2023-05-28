@@ -33,11 +33,31 @@ public class ReviewController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> getReviewList(){
+    public ResponseEntity<? super GetReviewListResponseDto> getReviewList(){
 
         ResponseEntity<? super GetReviewListResponseDto> response =
                 reviewService.getReviewList();
 
+        return response;
+
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<? super GetReviewListResponseDto> getMyReview(
+            @AuthenticationPrincipal UserPrincipal userPrincipal
+    ){
+        int userId = userPrincipal.getUserId();
+        ResponseEntity<? super GetReviewListResponseDto> response = reviewService.getMyReview(userId);
+        return response;
+    }
+
+    @GetMapping("/{campaign-id}")
+    public ResponseEntity<? super GetReviewListResponseDto> getCampaignReviewList(
+            @PathVariable("campaign-id") Integer campaignId
+    ){
+
+        ResponseEntity<? super GetReviewListResponseDto> response =
+                reviewService.getCampaignReview(campaignId);
         return response;
 
     }

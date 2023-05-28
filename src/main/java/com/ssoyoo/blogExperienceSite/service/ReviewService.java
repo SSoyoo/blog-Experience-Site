@@ -11,4 +11,9 @@ public interface ReviewService {
     ResponseEntity<ResponseDto> postReview(int userId, PostReviewRequestDto dto);
 
     ResponseEntity<? super GetReviewListResponseDto> getReviewList();
+
+
+    ResponseEntity<? super GetReviewListResponseDto> getMyReview(Integer userId);
+
+    ResponseEntity<? super GetReviewListResponseDto> getCampaignReview(Integer campaignId);
 }

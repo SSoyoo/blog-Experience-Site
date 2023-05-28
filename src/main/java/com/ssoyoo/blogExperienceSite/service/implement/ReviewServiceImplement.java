@@ -80,4 +80,51 @@ public class ReviewServiceImplement implements ReviewService {
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    @Override
+    public ResponseEntity<? super GetReviewListResponseDto> getMyReview(Integer userId) {
+
+        GetReviewListResponseDto body = null;
+
+        try {
+
+            boolean isExistUser = userRepository.existsByUserId(userId);
+            if(!isExistUser) return CustomResponse.authenticationFail();
+
+            List<ReviewListViewEntity> reviewList =
+                    reviewListViewRepository.findByUserIdOrderByCreatedAt(userId);
+
+            body = new GetReviewListResponseDto(reviewList);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetReviewListResponseDto> getCampaignReview(Integer campaignId) {
+        GetReviewListResponseDto body = null;
+
+        try {
+
+            boolean isExistUser = userRepository.existsByUserId(campaignId);
+            if(!isExistUser) return CustomResponse.authenticationFail();
+
+            List<ReviewListViewEntity> reviewList =
+                    reviewListViewRepository.findByCampaignIdOrderByCreatedAt(campaignId);
+
+            body = new GetReviewListResponseDto(reviewList);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+
 }

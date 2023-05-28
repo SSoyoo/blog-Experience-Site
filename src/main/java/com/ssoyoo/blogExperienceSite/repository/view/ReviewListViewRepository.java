@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ReviewListViewRepository extends JpaRepository<ReviewListViewEntity,Integer> {
    public List<ReviewListViewEntity> findByOrderByCreatedAtDesc();
+   public List<ReviewListViewEntity> findByUserIdOrderByCreatedAt(Integer userId);
+   public List<ReviewListViewEntity> findByCampaignIdOrderByCreatedAt(Integer campaignId);
 }

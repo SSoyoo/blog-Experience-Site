@@ -506,4 +506,36 @@ public class CampaignServiceImplement implements CampaignService {
 
         return CustomResponse.success();
     }
+
+    @Override
+    public ResponseEntity<? super GetCampaignDetailAsAdminResponseDto> getCampaignDetailAsAdmin(
+            String adminEmail,
+            Integer campaignId
+    ) {
+
+        GetCampaignDetailAsAdminResponseDto body = null;
+
+        try {
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFail();
+
+            CampaignEntity campaignEntity = campaignRepository.findByCampaignId(campaignId);
+            if(campaignEntity == null) return CustomResponse.noExistCampaign();
+
+            List<CampaignApplicationEntity> applicationList =
+                    campaignApplicationRepository.findByCampaignId(campaignId);
+
+            int applicationCount = applicationList.size();
+
+            body = new GetCampaignDetailAsAdminResponseDto(campaignEntity,applicationCount);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
 }

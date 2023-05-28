@@ -6,35 +6,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class GetCampaignDetailResponseDto extends ResponseDto {
+public class GetCampaignDetailAsAdminResponseDto extends ResponseDto {
 
-   private String title;
-   private int applicationCount;
-   private String campaignType;
-   private String category;
-   private String provisionDetail;
-   private String location;
-   private int recruitsNumber;
-   private String searchKeyword;
-   private String information;
-   private String mission;
-   private String precaution;
-   private String recruitmentStartDate;
-   private String recruitmentDeadline;
-   private String reviewerSelectionDate;
-   private String reviewRegistrationStartDate;
-   private String reviewRegistrationDeadline;
-   private String campaignEndDate;
-   private boolean isApplied;
-   private boolean isFavorite;
+    private String title;
+    private int applicationCount;
+    private String campaignType;
+    private String category;
+    private String provisionDetail;
+    private String location;
+    private int recruitsNumber;
+    private String searchKeyword;
+    private String information;
+    private String mission;
+    private String precaution;
+    private String recruitmentStartDate;
+    private String recruitmentDeadline;
+    private String reviewerSelectionDate;
+    private String reviewRegistrationStartDate;
+    private String reviewRegistrationDeadline;
+    private String campaignEndDate;
 
-    public GetCampaignDetailResponseDto(
+    public GetCampaignDetailAsAdminResponseDto(
             CampaignEntity campaignEntity,
-            boolean isApplied,
-            boolean isFavorite,
             int applicationCount
 
     ) {
@@ -56,7 +53,7 @@ public class GetCampaignDetailResponseDto extends ResponseDto {
         this.reviewRegistrationStartDate = campaignEntity.getReviewRegistrationStartDate();
         this.reviewRegistrationDeadline = campaignEntity.getReviewRegistrationDeadline();
         this.campaignEndDate = campaignEntity.getCampaignEndDate();
-        this.isApplied = isApplied;
-        this.isFavorite = isFavorite;
+        this.applicationCount = applicationCount;
+
     }
 }

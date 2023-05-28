@@ -5,6 +5,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto
 import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetAppliedUserListResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailAsAdminResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetOngoingCampaignListResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.view.OngoingCampaignListViewEntity;
 import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
@@ -34,6 +35,19 @@ public class AdminCampaignController {
                 campaignService.getOngoingListAsAdmin(adminEmail,sort);
         return response;
 
+    }
+
+    @GetMapping("/{campaign-id}")
+    ResponseEntity<? super GetCampaignDetailAsAdminResponseDto> getDetailAsAdmin(
+            @AuthenticationPrincipal AdminPrincipal adminPrincipal,
+            @PathVariable("campaign-id") Integer campaignId
+    ){
+
+        String adminEmail = adminPrincipal.getEmail();
+        ResponseEntity<? super GetCampaignDetailAsAdminResponseDto> response
+                = campaignService.getCampaignDetailAsAdmin(adminEmail,campaignId);
+
+        return response;
     }
 
     @GetMapping("/applicant/{campaign-id}")

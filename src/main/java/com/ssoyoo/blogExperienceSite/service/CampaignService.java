@@ -38,4 +38,6 @@ public interface CampaignService {
     ResponseEntity<? super GetOngoingCampaignListResponseDto> getOngoingListAsAdmin(String adminEmail, String sort);
 
     ResponseEntity<ResponseDto> updateCampaign(String adminEmail, PatchCampaignRequestDto dto);
+
+    ResponseEntity<? super GetCampaignDetailAsAdminResponseDto> getCampaignDetailAsAdmin(String adminEmail, Integer campaignId);
 }

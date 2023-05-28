@@ -5,7 +5,7 @@ import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationReq
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignDetailResponseDto;
-import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetCampaignListResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetOngoingCampaignListResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationOngoingResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetMyApplicationSelectedResponseDto;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
@@ -54,13 +54,13 @@ public class CampaignController {
     }
 
     @GetMapping("/list/{type}/{sort}")
-    public ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(
+    public ResponseEntity<? super GetOngoingCampaignListResponseDto> getCampaignList(
             @PathVariable("type") String type,
             @PathVariable("sort") String listSort
 
     ){
 
-        ResponseEntity<? super GetCampaignListResponseDto> response =
+        ResponseEntity<? super GetOngoingCampaignListResponseDto> response =
                 campaignService.getCampaignList(type,listSort);
 
         return response;
@@ -87,7 +87,7 @@ public class CampaignController {
     ){
         int userId = userPrincipal.getUserId();
         ResponseEntity<? super GetMyApplicationOngoingResponseDto> response =
-                campaignService.getOngoingList(userId);
+                campaignService.getMyOngoingList(userId);
 
         return response;
 

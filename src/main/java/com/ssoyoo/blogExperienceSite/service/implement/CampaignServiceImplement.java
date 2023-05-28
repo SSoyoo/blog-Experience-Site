@@ -3,14 +3,15 @@ package com.ssoyoo.blogExperienceSite.service.implement;
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.SelectReviewerRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
 import com.ssoyoo.blogExperienceSite.entity.*;
-import com.ssoyoo.blogExperienceSite.entity.view.CampaignListViewEntity;
+import com.ssoyoo.blogExperienceSite.entity.view.OngoingCampaignListViewEntity;
 import com.ssoyoo.blogExperienceSite.entity.view.GetAppliedUserListViewEntity;
 import com.ssoyoo.blogExperienceSite.entity.view.GetMyApplicationViewEntity;
+import com.ssoyoo.blogExperienceSite.entity.view.OngoingCampaignListViewEntity;
 import com.ssoyoo.blogExperienceSite.repository.*;
 import com.ssoyoo.blogExperienceSite.repository.view.CampaignListViewRepository;
 import com.ssoyoo.blogExperienceSite.repository.view.GetAppliedUserListViewRepository;
@@ -143,12 +144,12 @@ public class CampaignServiceImplement implements CampaignService {
     }
 
     @Override
-    public ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String type,String listSort) {
+    public ResponseEntity<? super GetOngoingCampaignListResponseDto> getCampaignList(String type,String listSort) {
 
-        GetCampaignListResponseDto body = null;
+        GetOngoingCampaignListResponseDto body = null;
 
         try {
-            List<CampaignListViewEntity> campaignList = null;
+            List<OngoingCampaignListViewEntity> campaignList = null;
 
             if(type.equalsIgnoreCase("all")){
 
@@ -157,7 +158,7 @@ public class CampaignServiceImplement implements CampaignService {
                 }else if(listSort.equalsIgnoreCase("popular")){
                     campaignList = campaignListViewRepository.findByOrderByApplicationCountDesc();
                 }else if(listSort.equalsIgnoreCase("deadline")){
-                    campaignList = campaignListViewRepository.findByOrderByReviewRegistrationDeadline();
+                    campaignList = campaignListViewRepository.findByOrderByRecruitmentDeadline();
                 }
             } else if (type.equalsIgnoreCase("visit")) {
 
@@ -166,7 +167,7 @@ public class CampaignServiceImplement implements CampaignService {
                 }else if(listSort.equalsIgnoreCase("popular")){
                     campaignList = campaignListViewRepository.findByCampaignTypeOrderByApplicationCountDesc("방문형");
                 }else if(listSort.equalsIgnoreCase("deadline")){
-                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByReviewRegistrationDeadline("방문형");
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByRecruitmentDeadline("방문형");
                 }
             } else if (type.equalsIgnoreCase("shipping")){
 
@@ -175,12 +176,12 @@ public class CampaignServiceImplement implements CampaignService {
                 }else if(listSort.equalsIgnoreCase("popular")){
                     campaignList = campaignListViewRepository.findByCampaignTypeOrderByApplicationCountDesc("배송형");
                 }else if(listSort.equalsIgnoreCase("deadline")){
-                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByReviewRegistrationDeadline("배송형");
+                    campaignList = campaignListViewRepository.findByCampaignTypeOrderByRecruitmentDeadline("배송형");
                 }
 
             }
 
-            body = new GetCampaignListResponseDto(campaignList);
+            body = new GetOngoingCampaignListResponseDto(campaignList);
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -303,7 +304,7 @@ public class CampaignServiceImplement implements CampaignService {
     }
 
     @Override
-    public ResponseEntity<? super GetMyApplicationOngoingResponseDto> getOngoingList(int userId) {
+    public ResponseEntity<? super GetMyApplicationOngoingResponseDto> getMyOngoingList(int userId) {
 
         GetMyApplicationOngoingResponseDto body = null;
 
@@ -390,7 +391,7 @@ public class CampaignServiceImplement implements CampaignService {
 
             List<GetAppliedUserListViewEntity> userList =
                     getAppliedUserListViewRepository.findByCampaignId(campaignId);
-            System.out.println(userList.toString());
+
 
             body = new GetAppliedUserListResponseDto(userList);
 
@@ -446,5 +447,35 @@ public class CampaignServiceImplement implements CampaignService {
         }
 
         return CustomResponse.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetOngoingCampaignListResponseDto> getOngoingListAsAdmin(String adminEmail, String sort) {
+
+        GetOngoingCampaignListResponseDto body = null;
+
+        try {
+
+            List<OngoingCampaignListViewEntity> campaignList;
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin)return CustomResponse.authenticationFail();
+
+            if(sort.equalsIgnoreCase("all")){
+                campaignList = campaignListViewRepository.findByOrderByRecruitmentDeadline();
+                body = new GetOngoingCampaignListResponseDto(campaignList);
+            } else if(sort.equalsIgnoreCase("not-selected")){
+                campaignList = campaignListViewRepository.findByIsDoneSelectOrderByRecruitmentDeadline(false);
+                body = new GetOngoingCampaignListResponseDto(campaignList);
+
+            }else return CustomResponse.validationFail();
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 }

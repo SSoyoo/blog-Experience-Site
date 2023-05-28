@@ -1,4 +1,4 @@
-package com.ssoyoo.blogExperienceSite.dto.request.campaign;
+package com.ssoyoo.blogExperienceSite.dto.request.admin;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

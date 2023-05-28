@@ -2,10 +2,11 @@ package com.ssoyoo.blogExperienceSite.service;
 
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.SelectReviewerRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
+import com.ssoyoo.blogExperienceSite.entity.view.OngoingCampaignListViewEntity;
 import org.springframework.http.ResponseEntity;
 
 public interface CampaignService {
@@ -15,7 +16,7 @@ public interface CampaignService {
 
     ResponseEntity<? super GetCampaignDetailResponseDto> getCampaignDetail(Integer userId, Integer campaignId);
 
-    ResponseEntity<? super GetCampaignListResponseDto> getCampaignList(String type,String listSort);
+    ResponseEntity<? super GetOngoingCampaignListResponseDto> getCampaignList(String type,String listSort);
 
     ResponseEntity<ResponseDto> postFavorite(Integer userId, Integer campaignId);
 
@@ -25,11 +26,13 @@ public interface CampaignService {
 
     ResponseEntity<ResponseDto> deleteApplication(int userId, int campaignId);
 
-    ResponseEntity<? super GetMyApplicationOngoingResponseDto> getOngoingList(int userId);
+    ResponseEntity<? super GetMyApplicationOngoingResponseDto> getMyOngoingList(int userId);
 
     ResponseEntity<? super GetMyApplicationSelectedResponseDto> getSelectedList(int userId, String sort);
 
     ResponseEntity<? super GetAppliedUserListResponseDto> getAppliedUserList(String adminEmail, Integer campaignId);
 
     ResponseEntity<ResponseDto> selectReviewer(String adminEmail, SelectReviewerRequestDto dto);
+
+    ResponseEntity<? super GetOngoingCampaignListResponseDto> getOngoingListAsAdmin(String adminEmail, String sort);
 }

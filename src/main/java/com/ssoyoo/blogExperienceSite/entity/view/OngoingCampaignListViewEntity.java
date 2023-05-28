@@ -9,9 +9,9 @@ import javax.persistence.Table;
 
 @Getter
 @NoArgsConstructor
-@Entity(name = "getCampaignList")
-@Table(name = "getCampaignList")
-public class CampaignListViewEntity {
+@Entity(name = "getOngoingCampaignListView")
+@Table(name = "getOngoingCampaignListView")
+public class OngoingCampaignListViewEntity {
     @Id
     private int campaignId;
     private String campaignType;
@@ -20,8 +20,10 @@ public class CampaignListViewEntity {
     private String photoUrl;
     private String provisionDetail;
     private int applicationCount;
+    private int favoriteCount;
     private int recruitsNumber;
-    private String reviewRegistrationDeadline;
+    private String recruitmentDeadline;
+    private boolean isDoneSelect;
     private String createdAt;
 
 

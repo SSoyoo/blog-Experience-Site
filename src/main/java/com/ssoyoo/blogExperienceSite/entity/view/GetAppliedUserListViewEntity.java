@@ -24,12 +24,12 @@ public class GetAppliedUserListViewEntity {
     private int campaignId;
     @Id
     private int userId;
-    private String title;
-    private String provisionDetail;
-    private String Category;
-    private String campaignType;
-    private String reviewerSelectionDate;
-    private String applicationCount;
+    private String applicationDate;
+    private String profileImageUrl;
+    private String nickname;
     private String userComment;
-    boolean isDoneSelect;
+    private String blogAddress;
+
+
+
 }

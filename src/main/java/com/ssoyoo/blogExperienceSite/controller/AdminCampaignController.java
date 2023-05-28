@@ -1,17 +1,16 @@
 package com.ssoyoo.blogExperienceSite.controller;
 
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.SelectReviewerRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetAppliedUserListResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.campaign.GetOngoingCampaignListResponseDto;
+import com.ssoyoo.blogExperienceSite.entity.view.OngoingCampaignListViewEntity;
 import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
-import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
 import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,6 +21,35 @@ import javax.validation.Valid;
 public class AdminCampaignController {
 
     private final CampaignService campaignService;
+
+    @GetMapping("ongoing-list/{sort}")
+    public ResponseEntity<? super GetOngoingCampaignListResponseDto> getOngoingList(
+            @AuthenticationPrincipal AdminPrincipal adminPrincipal,
+            @PathVariable("sort") String sort
+    ){
+
+        String adminEmail = adminPrincipal.getEmail();
+        ResponseEntity<?super GetOngoingCampaignListResponseDto> response =
+                campaignService.getOngoingListAsAdmin(adminEmail,sort);
+        return response;
+
+    }
+
+    @GetMapping("/applicant/{campaign-id}")
+    ResponseEntity<? super GetAppliedUserListResponseDto> getAppliedUserList(
+            @AuthenticationPrincipal AdminPrincipal adminPrincipal,
+            @PathVariable("campaign-id") Integer campaignId
+    ){
+
+        String adminEmail = adminPrincipal.getEmail();
+
+        ResponseEntity <? super GetAppliedUserListResponseDto> response =
+                campaignService.getAppliedUserList(adminEmail,campaignId);
+
+        return response;
+
+    }
+
 
     @PostMapping("")
     public ResponseEntity<ResponseDto> postCampaign(
@@ -46,20 +74,6 @@ public class AdminCampaignController {
 
         ResponseEntity<ResponseDto> response
                 = campaignService.selectReviewer(adminEmail,dto);
-
-        return response;
-
-    }
-
-    @GetMapping("{campaign-id}")
-    public ResponseEntity<? super GetAppliedUserListResponseDto> getAppliedUserList(
-            @AuthenticationPrincipal AdminPrincipal adminPrincipal,
-            @PathVariable("campaign-id") Integer campaignId
-
-    ){
-        String adminEmail = adminPrincipal.getEmail();
-        ResponseEntity<? super GetAppliedUserListResponseDto> response
-                = campaignService.getAppliedUserList(adminEmail,campaignId);
 
         return response;
 

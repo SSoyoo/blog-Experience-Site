@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,27 +39,22 @@ class AppliedUserSummary{
 
     private int campaignId;
     private int userId;
-    private String title;
-    private String provisionDetail;
-    private String category;
-    private String campaignType;
-    private String reviewerSelectionDate;
-    private String applicationCount;
+    private String applicationDate;
+    private String profileImageUrl;
+    private String nickname;
     private String userComment;
-    boolean isDoneSelect;
+    private String blogAddress;
 
 
     public AppliedUserSummary(GetAppliedUserListViewEntity appliedUserEntity) {
+
         this.campaignId = appliedUserEntity.getCampaignId();
         this.userId = appliedUserEntity.getUserId();
-        this.title = appliedUserEntity.getTitle();
-        this.provisionDetail = appliedUserEntity.getProvisionDetail();
-        this.category =appliedUserEntity.getCategory();
-        this.campaignType = appliedUserEntity.getCampaignType();
-        this.reviewerSelectionDate = appliedUserEntity.getReviewerSelectionDate();
-        this.applicationCount = appliedUserEntity.getApplicationCount();
+        this.applicationDate = appliedUserEntity.getApplicationDate();
+        this.profileImageUrl = appliedUserEntity.getProfileImageUrl();
+        this.nickname = appliedUserEntity.getNickname();
         this.userComment = appliedUserEntity.getUserComment();
-        this.isDoneSelect = appliedUserEntity.isDoneSelect();
+        this.blogAddress = appliedUserEntity.getBlogAddress();
 
     }
 }

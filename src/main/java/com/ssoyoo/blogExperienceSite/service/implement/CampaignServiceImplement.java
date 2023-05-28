@@ -118,23 +118,26 @@ public class CampaignServiceImplement implements CampaignService {
 
     @Override
     public ResponseEntity<? super GetCampaignDetailResponseDto> getCampaignDetail(Integer userId, Integer campaignId) {
-        //TODO : 관심등록 여부 로직 추가 해야 함!
+
         GetCampaignDetailResponseDto body = null;
         boolean isApplied = false;
+        boolean isFavorite = false;
 
         try {
 
             CampaignEntity campaignEntity = campaignRepository.findByCampaignId(campaignId);
             if(campaignEntity == null) return CustomResponse.noExistCampaign();
 
-            if(userId != null)
+            if(userId != null){
                 isApplied = campaignApplicationRepository.existsByUserIdAndCampaignId(userId,campaignId);
+                isFavorite = favoriteCampaignRepository.existsByUserIdAndCampaignId(userId,campaignId);
+            }
 
             List<CampaignApplicationEntity> applicaionList =
                     campaignApplicationRepository.findByCampaignId(campaignId);
             int applicationCount = applicaionList.size();
 
-            body = new GetCampaignDetailResponseDto(campaignEntity,isApplied,applicationCount);
+            body = new GetCampaignDetailResponseDto(campaignEntity,isApplied,isFavorite,applicationCount);
 
         }catch (Exception exception){
             exception.printStackTrace();

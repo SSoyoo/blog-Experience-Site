@@ -28,15 +28,15 @@ public class GetCampaignDetailResponseDto extends ResponseDto {
    private String reviewRegistrationStartDate;
    private String reviewRegistrationDeadline;
    private String campaignEndDate;
-
-
-
    private boolean isApplied;
+   private boolean isFavorite;
 
     public GetCampaignDetailResponseDto(
             CampaignEntity campaignEntity,
             boolean isApplied,
+            boolean isFavorite,
             int applicationCount
+
     ) {
         super("SU","Success");
         this.title = campaignEntity.getTitle();

@@ -1,11 +1,8 @@
 package com.ssoyoo.blogExperienceSite.service.implement;
 
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.PatchCampaignRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.*;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
 import com.ssoyoo.blogExperienceSite.entity.*;
@@ -21,6 +18,7 @@ import com.ssoyoo.blogExperienceSite.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,6 +39,7 @@ public class CampaignServiceImplement implements CampaignService {
     private final FavoriteCampaignRepository favoriteCampaignRepository;
     private final GetMyApplicationViewRepository getMyApplicationViewRepository;
     private final GetAppliedUserListViewRepository getAppliedUserListViewRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
 
@@ -537,5 +536,42 @@ public class CampaignServiceImplement implements CampaignService {
 
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteCampaign(String adminEmail, DeleteCampaignRequestDto dto) {
+
+        int campaignId = dto.getCampaignId();
+        String password = dto.getPassword();
+
+        try {
+
+            AdminEntity adminEntity = adminRepository.findByAdminEmail(adminEmail);
+            if(adminEntity == null) return CustomResponse.authenticationFail();
+
+            String encodedPassword = adminEntity.getAdminPassword();
+            boolean isSamePassword = passwordEncoder.matches(password,encodedPassword);
+
+            if(!isSamePassword) return CustomResponse.passwordMisMatch();
+
+            CampaignEntity campaignEntity = campaignRepository.findByCampaignId(campaignId);
+            if(campaignEntity == null) return CustomResponse.noExistCampaign();
+
+            boolean isExistApplication = campaignApplicationRepository.existsByCampaignId(campaignId);
+            if(!isExistApplication) return CustomResponse.existApplication();
+
+            List<PhotoEntity> photoEntityList = photoRepository.findByCampaignId(campaignId);
+            photoRepository.deleteAll(photoEntityList);
+
+            campaignRepository.delete(campaignEntity);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+
+        return CustomResponse.success();
     }
 }

@@ -118,6 +118,7 @@ public class CampaignController {
         return response;
     }
 
+
     @DeleteMapping("favorite/{campaignId}")
     public ResponseEntity<ResponseDto> deleteFavorite(
             @PathVariable("campaignId") Integer campaignId,

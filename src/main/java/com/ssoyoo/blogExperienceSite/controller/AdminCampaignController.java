@@ -1,5 +1,6 @@
 package com.ssoyoo.blogExperienceSite.controller;
 
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.DeleteCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PatchCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
@@ -107,6 +108,21 @@ public class AdminCampaignController {
         return response;
 
     }
+
+    @PatchMapping("/delete")
+    public ResponseEntity<ResponseDto> deleteCampaign(
+            @AuthenticationPrincipal AdminPrincipal adminPrincipal,
+            @Valid @RequestBody DeleteCampaignRequestDto dto
+
+    ){
+
+        String adminEmail = adminPrincipal.getEmail();
+        ResponseEntity<ResponseDto> response = campaignService.deleteCampaign(adminEmail,dto);
+
+        return response;
+
+    }
+
 
 
 

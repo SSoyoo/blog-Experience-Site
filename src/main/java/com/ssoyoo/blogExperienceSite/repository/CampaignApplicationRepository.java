@@ -12,7 +12,9 @@ import java.util.List;
 public interface CampaignApplicationRepository extends JpaRepository<CampaignApplicationEntity, CampaignApplicationPk> {
 
     public boolean existsByUserIdAndCampaignId(Integer userId, Integer campaignId);
+    public boolean existsByCampaignId(Integer campaignId);
     public List<CampaignApplicationEntity> findByCampaignId(Integer campaignId);
     public CampaignApplicationEntity findByUserIdAndCampaignId(Integer userId, Integer campaignId);
+
 
 }

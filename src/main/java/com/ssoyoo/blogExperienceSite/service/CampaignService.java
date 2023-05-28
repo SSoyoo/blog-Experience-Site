@@ -1,10 +1,7 @@
 package com.ssoyoo.blogExperienceSite.service;
 
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.CampaignApplicationRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.PatchCampaignRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.PostCampaignRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.campaign.*;
 import com.ssoyoo.blogExperienceSite.dto.request.admin.SelectReviewerRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.campaign.UpdateApplicationRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.campaign.*;
 import com.ssoyoo.blogExperienceSite.entity.view.OngoingCampaignListViewEntity;
@@ -40,4 +37,6 @@ public interface CampaignService {
     ResponseEntity<ResponseDto> updateCampaign(String adminEmail, PatchCampaignRequestDto dto);
 
     ResponseEntity<? super GetCampaignDetailAsAdminResponseDto> getCampaignDetailAsAdmin(String adminEmail, Integer campaignId);
+
+    ResponseEntity<ResponseDto> deleteCampaign(String adminEmail, DeleteCampaignRequestDto dto);
 }

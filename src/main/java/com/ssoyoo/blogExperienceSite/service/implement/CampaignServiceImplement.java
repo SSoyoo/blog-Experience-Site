@@ -180,7 +180,7 @@ public class CampaignServiceImplement implements CampaignService {
                     campaignList = campaignListViewRepository.findByCampaignTypeOrderByApplicationCountDesc("배송형");
                 }else if(listSort.equalsIgnoreCase("deadline")){
                     campaignList = campaignListViewRepository.findByCampaignTypeOrderByRecruitmentDeadline("배송형");
-                }
+                }else return CustomResponse.validationFail();
 
             }
 

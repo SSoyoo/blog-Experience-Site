@@ -3,7 +3,9 @@ package com.ssoyoo.blogExperienceSite.controller;
 
 import com.ssoyoo.blogExperienceSite.dto.request.review.PostReviewRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.review.GetReviewListAsAdminResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.review.GetReviewListResponseDto;
+import com.ssoyoo.blogExperienceSite.security.AdminPrincipal;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
 import com.ssoyoo.blogExperienceSite.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +44,20 @@ public class ReviewController {
 
     }
 
+    @GetMapping("list/admin")
+    public ResponseEntity<? super GetReviewListAsAdminResponseDto> getReviewList(
+            @AuthenticationPrincipal AdminPrincipal adminPrincipal
+            ){
+
+        String adminEmail = adminPrincipal.getEmail();
+        ResponseEntity<? super GetReviewListAsAdminResponseDto> response =
+                reviewService.getReviewListAsAdmin(adminEmail);
+
+        return response;
+
+
+    }
+
     @GetMapping("/my")
     public ResponseEntity<? super GetReviewListResponseDto> getMyReview(
             @AuthenticationPrincipal UserPrincipal userPrincipal
@@ -50,6 +66,8 @@ public class ReviewController {
         ResponseEntity<? super GetReviewListResponseDto> response = reviewService.getMyReview(userId);
         return response;
     }
+
+
 
     @GetMapping("/{campaign-id}")
     public ResponseEntity<? super GetReviewListResponseDto> getCampaignReviewList(

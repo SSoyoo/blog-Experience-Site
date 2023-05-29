@@ -3,10 +3,12 @@ package com.ssoyoo.blogExperienceSite.service.implement;
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.request.review.PostReviewRequestDto;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
+import com.ssoyoo.blogExperienceSite.dto.response.review.GetReviewListAsAdminResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.review.GetReviewListResponseDto;
 import com.ssoyoo.blogExperienceSite.entity.CampaignApplicationEntity;
 import com.ssoyoo.blogExperienceSite.entity.ReviewEntity;
 import com.ssoyoo.blogExperienceSite.entity.view.ReviewListViewEntity;
+import com.ssoyoo.blogExperienceSite.repository.AdminRepository;
 import com.ssoyoo.blogExperienceSite.repository.CampaignApplicationRepository;
 import com.ssoyoo.blogExperienceSite.repository.ReviewRepository;
 import com.ssoyoo.blogExperienceSite.repository.UserRepository;
@@ -24,6 +26,7 @@ import java.util.List;
 public class ReviewServiceImplement implements ReviewService {
 
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
     private final ReviewRepository reviewRepository;
     private final CampaignApplicationRepository campaignApplicationRepository;
     private final ReviewListViewRepository reviewListViewRepository;
@@ -117,6 +120,27 @@ public class ReviewServiceImplement implements ReviewService {
                     reviewListViewRepository.findByCampaignIdOrderByCreatedAt(campaignId);
 
             body = new GetReviewListResponseDto(reviewList);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<? super GetReviewListAsAdminResponseDto> getReviewListAsAdmin(String adminEmail) {
+
+        GetReviewListAsAdminResponseDto body = null;
+
+        try {
+
+            boolean isExistAdmin = adminRepository.existsByAdminEmail(adminEmail);
+            if(!isExistAdmin) return CustomResponse.authenticationFail();
+
+            List<ReviewListViewEntity> reviewList = reviewListViewRepository.findByOrderByCreatedAtDesc();
+            body = new GetReviewListAsAdminResponseDto(reviewList);
 
         }catch (Exception exception){
             exception.printStackTrace();

@@ -574,4 +574,23 @@ public class CampaignServiceImplement implements CampaignService {
 
         return CustomResponse.success();
     }
+
+    @Override
+    public ResponseEntity<? super GetOngoingCampaignListResponseDto> searchCampaign(String keyword) {
+
+        GetOngoingCampaignListResponseDto body = null;
+        try {
+
+            List<OngoingCampaignListViewEntity> campaignList =
+                    campaignListViewRepository.findByTitleContaining(keyword);
+
+            body = new GetOngoingCampaignListResponseDto(campaignList);
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
 }

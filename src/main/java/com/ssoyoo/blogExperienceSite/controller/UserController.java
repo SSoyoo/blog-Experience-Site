@@ -1,15 +1,13 @@
 package com.ssoyoo.blogExperienceSite.controller;
 
-import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.UpdatePasswordRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.*;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.GetMyInfoResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
 import com.ssoyoo.blogExperienceSite.provider.JwtTokenProvider;
 import com.ssoyoo.blogExperienceSite.security.UserPrincipal;
 import com.ssoyoo.blogExperienceSite.service.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -78,7 +76,23 @@ public class UserController {
             return response;
     }
 
+    @PatchMapping("/withdrawal")
+    public ResponseEntity<ResponseDto> withdrawal(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @Valid @RequestBody DeleteUserRequestDto dto
+            ){
+
+        int userId = userPrincipal.getUserId();
+
+        ResponseEntity<ResponseDto> response = userService.deleteUser(userId,dto);
+
+        return response;
+        }
 
 
 
-}
+    }
+
+
+
+

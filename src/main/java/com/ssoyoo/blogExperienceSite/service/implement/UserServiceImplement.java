@@ -1,28 +1,31 @@
 package com.ssoyoo.blogExperienceSite.service.implement;
 
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
-import com.ssoyoo.blogExperienceSite.dto.request.user.SignInRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.UpdatePasswordRequestDto;
-import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
+import com.ssoyoo.blogExperienceSite.dto.request.user.*;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.GetMyInfoResponseDto;
 import com.ssoyoo.blogExperienceSite.dto.response.User.SignInResponseDto;
+import com.ssoyoo.blogExperienceSite.entity.CampaignApplicationEntity;
 import com.ssoyoo.blogExperienceSite.entity.UserEntity;
 import com.ssoyoo.blogExperienceSite.provider.JwtTokenProvider;
+import com.ssoyoo.blogExperienceSite.repository.CampaignApplicationRepository;
 import com.ssoyoo.blogExperienceSite.repository.UserRepository;
 import com.ssoyoo.blogExperienceSite.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImplement implements UserService {
 
     private final UserRepository userRepository;
+    private final CampaignApplicationRepository campaignApplicationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -186,6 +189,30 @@ public class UserServiceImplement implements UserService {
             return CustomResponse.databaseError();
         }
         return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteUser(int userId, DeleteUserRequestDto dto) {
+
+        try {
+
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if(userEntity == null) return CustomResponse.authenticationFail();
+
+            List<CampaignApplicationEntity> applicationList =
+                    campaignApplicationRepository.findByUserId(userId);
+
+            if(applicationList != null) campaignApplicationRepository.deleteAll(applicationList);
+
+            userRepository.delete(userEntity);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return CustomResponse.databaseError();
+        }
+
+        return CustomResponse.success();
     }
 
 }

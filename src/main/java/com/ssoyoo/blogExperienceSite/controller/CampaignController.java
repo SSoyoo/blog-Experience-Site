@@ -107,6 +107,18 @@ public class CampaignController {
 
     }
 
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<? super GetOngoingCampaignListResponseDto> searchCampaign(
+            @PathVariable("keyword") String keyword
+    ){
+
+        ResponseEntity<? super GetOngoingCampaignListResponseDto> response =
+                campaignService.searchCampaign(keyword);
+
+        return response;
+
+    }
+
     @PatchMapping("application")
     public ResponseEntity<ResponseDto> updateApplication(
             @AuthenticationPrincipal UserPrincipal userPrincipal,

@@ -16,5 +16,6 @@ public interface CampaignListViewRepository extends JpaRepository<OngoingCampaig
     public List<OngoingCampaignListViewEntity> findByCampaignTypeOrderByCreatedAt(String type);
     public List<OngoingCampaignListViewEntity> findByCampaignTypeOrderByApplicationCountDesc(String type);
     public List<OngoingCampaignListViewEntity> findByCampaignTypeOrderByRecruitmentDeadline(String type);
+    public List<OngoingCampaignListViewEntity> findByTitleContaining(String keyword);
 
 }

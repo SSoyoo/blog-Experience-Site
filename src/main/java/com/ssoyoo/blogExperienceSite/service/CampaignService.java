@@ -39,4 +39,6 @@ public interface CampaignService {
     ResponseEntity<? super GetCampaignDetailAsAdminResponseDto> getCampaignDetailAsAdmin(String adminEmail, Integer campaignId);
 
     ResponseEntity<ResponseDto> deleteCampaign(String adminEmail, DeleteCampaignRequestDto dto);
+
+    ResponseEntity<? super GetOngoingCampaignListResponseDto> searchCampaign(String keyword);
 }

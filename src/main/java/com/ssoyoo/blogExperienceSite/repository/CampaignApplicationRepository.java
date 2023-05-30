@@ -14,6 +14,8 @@ public interface CampaignApplicationRepository extends JpaRepository<CampaignApp
     public boolean existsByUserIdAndCampaignId(Integer userId, Integer campaignId);
     public boolean existsByCampaignId(Integer campaignId);
     public List<CampaignApplicationEntity> findByCampaignId(Integer campaignId);
+    public List<CampaignApplicationEntity> findByUserId(Integer userId);
+
     public CampaignApplicationEntity findByUserIdAndCampaignId(Integer userId, Integer campaignId);
 
 

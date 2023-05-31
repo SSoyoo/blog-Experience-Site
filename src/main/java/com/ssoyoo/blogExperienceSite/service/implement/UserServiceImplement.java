@@ -160,6 +160,8 @@ public class UserServiceImplement implements UserService {
             boolean isEqualPassword = passwordEncoder.matches(currentPassword,encodedPassword);
             if(!isEqualPassword) return CustomResponse.passwordMisMatch();
 
+            userEntity.setPassword(encodedPasswordPasswordToChange);
+
             userRepository.save(userEntity);
 
         }catch (Exception exception){

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ssoyoo.blogExperienceSite.common.util.CustomResponse;
 import com.ssoyoo.blogExperienceSite.dto.response.ResponseDto;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
@@ -24,6 +25,11 @@ public class CustomExceptionHandler {
         return CustomResponse.validationFail();
     }
 
-
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ResponseDto> methodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException exception
+    ){
+        return CustomResponse.validationFail();
+    }
 
 }

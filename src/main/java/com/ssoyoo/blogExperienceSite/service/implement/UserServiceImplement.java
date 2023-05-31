@@ -126,11 +126,7 @@ public class UserServiceImplement implements UserService {
             if(isExistPhoneNumber) return CustomResponse.existentPhoneNumber();
 
             UserEntity updateUserEntity = new UserEntity(userEntity,dto);
-
-
-
-
-            userRepository.save(userEntity);
+            userRepository.save(updateUserEntity);
 
 
         } catch (Exception exception) {

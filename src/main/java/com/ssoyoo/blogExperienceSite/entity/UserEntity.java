@@ -59,6 +59,7 @@ public class UserEntity {
 
     public UserEntity(UserEntity userEntity, UpdateUserRequestDto dto) {
 
+        this.userId = userEntity.getUserId();
         this.email = userEntity.getEmail();
         this.password = userEntity.getPassword();
         this.name = userEntity.getName();

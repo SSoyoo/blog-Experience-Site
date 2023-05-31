@@ -194,10 +194,19 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseEntity<ResponseDto> deleteUser(int userId, DeleteUserRequestDto dto) {
 
+        String password = dto.getPassword();;
+
+
+
         try {
 
             UserEntity userEntity = userRepository.findByUserId(userId);
             if(userEntity == null) return CustomResponse.authenticationFail();
+
+            String encodedPassword = userEntity.getPassword();
+
+            boolean isSamePassword = passwordEncoder.matches(password,encodedPassword);
+            if(!isSamePassword) return CustomResponse.passwordMisMatch();
 
             List<CampaignApplicationEntity> applicationList =
                     campaignApplicationRepository.findByUserId(userId);

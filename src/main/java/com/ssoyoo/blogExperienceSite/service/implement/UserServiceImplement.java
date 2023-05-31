@@ -100,40 +100,35 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<ResponseDto> updateUser(String email, UpdateUserRequestDto dto) {
+    public ResponseEntity<ResponseDto> updateUser(Integer userId, UpdateUserRequestDto dto) {
 
         String password = dto.getPassword();
         String nickname = dto.getNickname();
         String blogAddress = dto.getBlogAddress();
         String phoneNumber = dto.getPhoneNumber();
-        String profileImageUrl = dto.getProfileImageUrl();
-        String homeAddress = dto.getHomeAddress();
-
 
         try {
 
-            UserEntity userEntity = userRepository.findByEmail(email);
+            UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null) return CustomResponse.authenticationFail();
 
             String encodedPassword = userEntity.getPassword();
             boolean isEqualPassword = passwordEncoder.matches(password,encodedPassword);
             if(!isEqualPassword) return CustomResponse.passwordMisMatch();
 
-            boolean isExistNickname = userRepository.existsByNickname(nickname);
+            boolean isExistNickname = userRepository.existsByNicknameAndUserIdNot(nickname,userId);
             if(isExistNickname) return CustomResponse.existentNickname();
 
-            boolean isExistBlogAddress = userRepository.existsByBlogAddress(blogAddress);
+            boolean isExistBlogAddress = userRepository.existsByBlogAddressAndUserIdNot(blogAddress,userId);
             if(isExistBlogAddress) return CustomResponse.existentBlog();
 
-            boolean isExistPhoneNumber = userRepository.existsByPhoneNumber(phoneNumber);
+            boolean isExistPhoneNumber = userRepository.existsByPhoneNumberAndUserIdNot(phoneNumber,userId);
             if(isExistPhoneNumber) return CustomResponse.existentPhoneNumber();
 
+            UserEntity updateUserEntity = new UserEntity(userEntity,dto);
 
-            userEntity.setNickname(nickname);
-            userEntity.setBlogAddress(blogAddress);
-            userEntity.setPhoneNumber(phoneNumber);
-            userEntity.setProfileImageUrl(profileImageUrl);
-            userEntity.setHomeAddress(homeAddress);
+
+
 
             userRepository.save(userEntity);
 

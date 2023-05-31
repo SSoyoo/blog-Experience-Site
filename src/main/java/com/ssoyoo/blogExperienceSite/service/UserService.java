@@ -14,7 +14,7 @@ public interface UserService {
     
     public ResponseEntity<ResponseDto> signUp(SignUpRequestDto dto);
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto);
-    public ResponseEntity<ResponseDto> updateUser(String email, UpdateUserRequestDto dto);
+    public ResponseEntity<ResponseDto> updateUser(Integer userId, UpdateUserRequestDto dto);
     ResponseEntity<ResponseDto> updatePassword(String email, UpdatePasswordRequestDto dto);
 
     ResponseEntity<? super GetMyInfoResponseDto> getMyInfo(String userEmail);

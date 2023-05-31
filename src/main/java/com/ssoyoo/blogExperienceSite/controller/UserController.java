@@ -58,8 +58,8 @@ public class UserController {
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
         {
-            String email = userPrincipal.getEmail();
-            ResponseEntity<ResponseDto> response = userService.updateUser(email, dto);
+            int userId = userPrincipal.getUserId();
+            ResponseEntity<ResponseDto> response = userService.updateUser(userId, dto);
             return response;
         }
     }

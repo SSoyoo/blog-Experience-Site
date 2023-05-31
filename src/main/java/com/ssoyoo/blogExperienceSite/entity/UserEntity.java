@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.ssoyoo.blogExperienceSite.dto.request.user.SignUpRequestDto;
 
+import com.ssoyoo.blogExperienceSite.dto.request.user.UpdateUserRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -55,4 +56,19 @@ public class UserEntity {
 
     }
 
+
+    public UserEntity(UserEntity userEntity, UpdateUserRequestDto dto) {
+
+        this.email = userEntity.getEmail();
+        this.password = userEntity.getPassword();
+        this.name = userEntity.getName();
+        this.nickname = dto.getNickname();
+        this.blogAddress = dto.getBlogAddress();
+        this.homeAddress = dto.getHomeAddress();
+        this.phoneNumber = dto.getPhoneNumber();
+        this.personalInfoAgreement = userEntity.isPersonalInfoAgreement();
+        this.profileImageUrl = dto.getProfileImageUrl();
+        this.createdAt = userEntity.getCreatedAt();
+
+    }
 }
